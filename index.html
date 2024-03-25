@@ -1,18 +1,63 @@
 <!DOCTYPE html>
-<html lang = "en">
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage - Your Name</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="subpages/cv.html">Portfolio</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
 
-<h1>My First Heading</h1>
-
-<h2>Quantum Computation for high school</h2>
-
-
-<a href=course_doc.pdf>Syllubus Note</a>
-
-<a href=note_1.pdf>Note 1</a>
-<a href=quiz_1.pdf>Quiz 1</a>
-<a href=https://sites.google.com/ycsh.tp.edu.tw/2023qbit/首頁?fbclid=IwAR2A4c3zD9ulYBHS3Ny6xGL83ZE99qvWpvpz4W-mgoRk3RD9xRBiRSXMtzI_aem_th_AYEqrK4e_esSn4PVkCTMWKMpB8LcCyI4LVgJeFrojX5tes5mkr81R49-qY-pt4wmdakmSGx9Z23L-okztwHzfq7x&mibextid=Zxz2cZ>台北市量子電腦教材</a>
-
+    <header id="home">
+        <h1>Welcome to My Website</h1>
+        <p>Hi, I'm [Your Name], a [Your Profession/Interest]. Explore my world!</p>
+    </header>
+    
+    <section id="about">
+        <h2>About Me</h2>
+        <p>I'm a passionate [Your Profession/Interest] with a love for [Briefly describe what you love about your profession or hobby]. I've worked on [Mention any notable projects or experiences], and I'm always looking for new challenges.</p>
+    </section>
+    
+    <section id="services">
+        <h2>Services</h2>
+        <div class="service-item">Service 1</div>
+        <div class="service-item">Service 2</div>
+        <div class="service-item">Service 3</div>
+    </section>
+    
+    <section id="portfolio">
+        <h2>Portfolio</h2>
+        <div class="portfolio-item">Project 1</div>
+        <div class="portfolio-item">Project 2</div>
+        <div class="portfolio-item">Project 3</div>
+    </section>
+    
+    <footer id="contact">
+        <p>Contact me at <a href="mailto:your.email@example.com">your.email@example.com</a></p>
+        <div class="social-links">
+            <a href="http://linkedin.com">LinkedIn</a> |
+            <a href="http://github.com">GitHub</a> |
+            <a href="http://twitter.com">Twitter</a>
+        </div>
+    </footer>
 </body>
+
+<script type="text/javascript">
+    console.log(screen.width)
+    <!--
+    if (screen.width <= 699) {
+        console.log("hello")
+    document.location = "subpages/mobile.html";
+    }
+    //-->
+</script>
 </html>
