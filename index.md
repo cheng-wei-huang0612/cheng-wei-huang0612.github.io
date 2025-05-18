@@ -24,7 +24,7 @@ Author of the **30 Days of Post-Quantum Cryptography**(written in traditional Ch
 
 ### 30 Days of Post-Quantum Cryptography (written in traditional Chinese) series
 
-[Day 01：前言](/_posts/pqc30/2024-09-01-day01.md)
+[Day 01：前言](/pqc30/day01.html)
 
 
 ### Contact
