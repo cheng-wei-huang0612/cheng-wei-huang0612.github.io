@@ -18,9 +18,9 @@ Author of the **30 Days of Post-Quantum Cryptography**(written in traditional Ch
 - ARM assembly
 
 
-\[
+\\[
 \mathbb{Z}/\langle PR \rangle \cong \mathbb{Z}/\langle P\rangle \times \mathbb{Z}/\langle R\rangle
-\]
+\\]
 
 ### 30 Days of Post-Quantum Cryptography (written in traditional Chinese) series
 
