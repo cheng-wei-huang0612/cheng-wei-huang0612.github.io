@@ -15,7 +15,13 @@ title: Home
 
 - arm assembly
 
+
+[Day 01：前言](/_posts/pqc30/2024-09-01-day01.md)
+
+
+
+
 [關於我](/about){: .btn}  
-[聯絡我](mailto:me@example.com){: .btn}
+[聯絡我](mailto:cesarehuang@icloud.com){: .btn}
 
 
