@@ -7,21 +7,26 @@ title: Home
 
 ## Cesare Huang
 
-後量子密碼學｜ARM 優化
 
-作者：**30 天後量子密碼學** 系列
+Post-Quantum Cryptography | ARM Optimization
 
-### 研究重點
+Author of the **30 Days of Post-Quantum Cryptography**(written in traditional Chinese) series
 
-- arm assembly
+### research interests
 
+- ARM assembly
+
+
+### 30 Days of Post-Quantum Cryptography (written in traditional Chinese) series
 
 [Day 01：前言](/_posts/pqc30/2024-09-01-day01.md)
 
 
+### Contact
+Feel free to reach me via:
+- [GitHub](https://github.com/cheng-wei-huang0612)
+- [Email](mailto:cesarehuang@icloud.com)
 
 
-[關於我](/about){: .btn}  
-[聯絡我](mailto:cesarehuang@icloud.com){: .btn}
 
 
