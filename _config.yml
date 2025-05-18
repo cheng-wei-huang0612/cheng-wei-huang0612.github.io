@@ -1,6 +1,10 @@
 title: Cesare Huang
 description: "Cryptography • HPC • Mathematics in Action"
-theme: jekyll-theme-cayman        # 內建簡潔主題
+
+
+# remote_theme: "Hammie217/LatexJekyll"
+# plugins:
+#   - jekyll-remote-theme 
 social_links:
   - name: GitHub
     url: https://github.com/cheng-wei-huang0612
@@ -8,3 +12,6 @@ social_links:
     url: https://www.linkedin.com/in/username
   - name: Threads
     url: https://www.threads.net/@username
+
+
+permalink: /:categories/:year/:month/:day/:title:output_ext

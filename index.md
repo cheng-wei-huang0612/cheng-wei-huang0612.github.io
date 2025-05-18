@@ -1,15 +1,37 @@
 ---
 layout: default
-title: Home
+title: Cesare Huang's Homepage
+abstract: So, we can add abstract???
 ---
 
-<div align="center">
 
-#  Cesare
 
-後量子密碼學｜ARM 優化
-作者：**30 天後量子密碼學** 系列
+## Cesare Huang
 
-[關於我](/about) • [Email](mailto:me@example.com)
 
-</div>
+Post-Quantum Cryptography | ARM Optimization
+
+Author of the **30 Days of Post-Quantum Cryptography**(written in traditional Chinese) series
+
+### research interests
+
+- ARM assembly
+
+
+\\[
+\mathbb{Z}/\langle PR \rangle \cong \mathbb{Z}/\langle P\rangle \times \mathbb{Z}/\langle R\rangle
+\\]
+
+### 30 Days of Post-Quantum Cryptography (written in traditional Chinese) series
+
+[Day 01：前言](/pqc30/day01.html)
+
+
+### Contact
+Feel free to reach me via:
+- [GitHub](https://github.com/cheng-wei-huang0612)
+- [Email](mailto:cesarehuang@icloud.com)
+
+
+
+
