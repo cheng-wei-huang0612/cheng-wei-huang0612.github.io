@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-<div class="intro">
+
 
 ## Cesare Huang
 
@@ -18,4 +18,4 @@ title: Home
 [關於我](/about){: .btn}  
 [聯絡我](mailto:me@example.com){: .btn}
 
-</div>
+
