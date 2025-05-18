@@ -1,7 +1,8 @@
 title: Cesare Huang
 description: "Cryptography • HPC • Mathematics in Action"
 
-remote_theme: sylhare/LatexJekyll
+
+remote_theme: "Hammie217/LatexJekyll"
 plugins:
   - jekyll-remote-theme 
 social_links:
