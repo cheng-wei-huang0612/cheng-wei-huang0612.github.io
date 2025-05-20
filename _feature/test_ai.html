@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>生日星座查詢 (專業版)</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
+</head>
+<body>
+  <h2>生日星座查詢 (專業占星計算)</h2>
+  <input type="date" id="birthday">
+  <button onclick="showZodiac()">查詢星座</button>
+  <div id="result" style="margin-top:20px;font-size:18px;"></div>
+
+  <script>
+    function showZodiac() {
+      const dateInput = document.getElementById('birthday').value;
+      const date = new Date(dateInput);
+
+      if (isNaN(date.getTime())) {
+        document.getElementById('result').innerText = '請輸入有效的日期！';
+        return;
+      }
+
+      const sunPos = SunCalc.getPosition(date, 0, 0);
+      const longitude = sunPos.azimuth * (180 / Math.PI) + 180; // 修正範圍為 0-360
+      const zodiacSigns = ['白羊座', '金牛座', '雙子座', '巨蟹座', '獅子座', '處女座',
+                           '天秤座', '天蠍座', '射手座', '摩羯座', '水瓶座', '雙魚座'];
+      const index = Math.floor((longitude % 360) / 30);
+      const zodiac = zodiacSigns[index];
+
+      document.getElementById('result').innerText = `你的星座是：${zodiac}`;
+    }
+  </script>
+</body>
+</html>
