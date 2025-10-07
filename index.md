@@ -22,7 +22,7 @@ Author of the **30 Days of Post-Quantum Cryptography**(written in traditional Ch
 \mathbb{Z}/\langle PR \rangle \cong \mathbb{Z}/\langle P\rangle \times \mathbb{Z}/\langle R\rangle
 \\]
 
-### 🚀 Recent Pet Project: [LLM-friendly Interactive Astrology Chart](https://cheng-wei-huang0612.github.io/astro_feature/test_ai.html)
+<!-- ### 🚀 Recent Pet Project: [LLM-friendly Interactive Astrology Chart](https://cheng-wei-huang0612.github.io/astro_feature/test_ai.html) -->
 
 ### 30 Days of Post-Quantum Cryptography (written in traditional Chinese) series
 
