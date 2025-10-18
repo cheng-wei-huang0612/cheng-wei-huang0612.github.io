@@ -1,10 +1,20 @@
 title: Cesare Huang
 description: "Cryptography • HPC • Mathematics in Action"
+url: "https://cheng-wei-huang0612.github.io"
+baseurl: ""
 
+theme: null
 
-# remote_theme: "Hammie217/LatexJekyll"
-# plugins:
-#   - jekyll-remote-theme 
+plugins:
+  - jekyll-toc
+  - jekyll-feed
+  - jekyll-sitemap
+
+# jekyll-toc:
+#   min_level: 2     # 從哪個層級開始；2 = ##  開始
+#   max_level: 3     # 最深顯示層級；3 = ### 為止
+#   no_toc_section_class: "no_toc"
+
 social_links:
   - name: GitHub
     url: https://github.com/cheng-wei-huang0612
@@ -13,5 +23,11 @@ social_links:
   - name: Threads
     url: https://www.threads.net/@username
 
+markdown: kramdown
+kramdown:
+  input: GFM
+  math_engine: mathjax
+  syntax_highlighter: rouge
 
 permalink: /:categories/:year/:month/:day/:title:output_ext
+

@@ -155,3 +155,29 @@
 .HUGE{
     font-size: 33px;
 }
+
+a {
+  color: black;                  /* 文字保持黑色 */
+  text-decoration: none;
+  border: 0.8px solid #008B8B;
+  padding: 1px 4px;              /* 內距讓邊框不貼字 */
+}
+
+
+a:visited {
+  color: black;                  /* 點過也不要變紫 */
+}
+
+
+p {
+  font-size: 19px;
+  margin-bottom: 1.2em;
+    text-align: justify;
+    text-justify: inter-word;
+}
+ul {
+  font-size: 19px;
+  margin-bottom: 1.2em;
+    text-align: justify;
+    text-justify: inter-word;
+}
