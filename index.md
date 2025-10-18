@@ -30,7 +30,7 @@ I am interested in uncovering deeper mathematical structures and applying them t
 
 - In 2024, I wrote a series of introduction to Post-Quantum 
     Cryptography, and has submitted to a technical blog contest held
-    by iTHome (https://ithelp.ithome.com.tw/2024ironman).
+    by <a href="https://ithelp.ithome.com.tw/2024ironman">ITHome</a>.
     This series consists of 30 articles and covers 
 
     - lattice based (2 - 9), 
@@ -76,7 +76,7 @@ $$
     \text{ if } g \bmod 2 = 0 \\
 &(2 + \delta, f, (g+f)/2)  
     \text{ if } \delta < 0 \text{ and } g \bmod 2 = 1 \\
-&(2 - \delta, f, (g-f)/2)  
+&(2 - \delta, g, (g-f)/2)  
     \text{ if } \delta \ge 0 \text{ and } g \bmod 2 = 1 \\
 \end{aligned}
 \right.
