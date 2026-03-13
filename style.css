@@ -1,0 +1,82 @@
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.6;
+    max-width: 820px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin-top: 35px;
+}
+
+p, ul {
+    margin-top: 0.8em;
+    margin-bottom: 0.8em;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #999;
+    margin: 25px 0;
+}
+
+a {
+    color: #0645ad;
+}
+
+.profile-photo {
+    float: right;
+    margin-left: 30px;
+    margin-bottom: 20px;
+    max-width: 150px;
+    height: auto;
+}
+
+.intro-text {
+    max-width: 560px;
+}
+
+.talk-list > li {
+    margin-bottom: 40px;
+}
+
+.talk-entry {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 48px;
+}
+
+.talk-text {
+    flex: 1 1 0;
+    max-width: 700px;
+}
+
+.talk-figure {
+    flex: 0 0 260px;
+    text-align: center;
+}
+
+.talk-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.publication-list {
+    margin-top: 20px;
+    padding-left: 22px;
+}
+
+.publication-list li {
+    margin-bottom: 28px;
+}
+
+.pub-links {
+    margin-top: 6px;
+}
