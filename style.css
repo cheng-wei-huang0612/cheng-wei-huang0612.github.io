@@ -80,3 +80,29 @@ a {
 .pub-links {
     margin-top: 6px;
 }
+
+/*photo related*/
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.photo-grid img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 6px;
+}
+
+.photo-grid figure {
+    margin: 0;
+}
+
+.photo-grid figcaption {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+}
