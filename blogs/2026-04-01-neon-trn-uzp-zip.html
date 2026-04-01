@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AArch64 NEON TRN/UZP/ZIP Quick Reference - Cesare Huang</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<h1>AArch64 NEON TRN/UZP/ZIP Quick Reference</h1>
+<p><a href="../blogs.html">back to blogs</a></p>
+<p><a href="../index.html">back to home</a></p>
+
+<hr>
+
+<p class="blog-meta">
+April 2026
+</p>
+
+<p>
+This page is a lookup-first reference for <span class="inline-code">TRN</span>,
+<span class="inline-code">UZP</span>, and <span class="inline-code">ZIP</span>.
+The goal is to make the lane movement easy to scan, especially when switching
+between mixed-source and same-source forms.
+</p>
+
+<p class="code-block">Mixed-source notation:
+vn = [<span class="src-a">a0</span> <span class="src-a">a1</span> <span class="src-a">a2</span> ...], vm = [<span class="src-b">b0</span> <span class="src-b">b1</span> <span class="src-b">b2</span> ...]
+
+Same-source notation:
+v0 = [x0 x1 x2 ...]
+
+The same-source case is the mixed-source case with both inputs drawn from the same x-sequence.</p>
+
+<h2>How to Use This Page</h2>
+
+<ul class="jump-list">
+  <li><a href="#section-16b">.16b</a></li>
+  <li><a href="#section-8h">.8h</a></li>
+  <li><a href="#section-4s">.4s</a></li>
+  <li><a href="#section-2d">.2d</a></li>
+</ul>
+
+<div class="note-box">
+  <p>
+  Start with <span class="inline-code">.4s</span> if you want intuition first.
+  It is the easiest arrangement for seeing how <span class="inline-code">TRN</span>,
+  <span class="inline-code">UZP</span>, and <span class="inline-code">ZIP</span>
+  differ. Use the other sections as lookup tables once that pattern is clear.
+  </p>
+</div>
+
+<h2>At a Glance</h2>
+
+<p>
+<b>TRN</b> takes either the even lanes or the odd lanes, then interleaves them.
+</p>
+
+<p>
+<b>UZP</b> takes either the even lanes or the odd lanes, then packs them
+toward the front.
+</p>
+
+<p>
+<b>ZIP</b> takes either the low half or the high half, then interleaves it.
+</p>
+
+<hr>
+
+<h2>Six Patterns to Memorize</h2>
+
+<div class="table-wrapper">
+  <table class="tech-table summary-table">
+    <thead>
+      <tr>
+        <th>Instruction</th>
+        <th>Mixed-source pattern</th>
+        <th>One-line reading</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>trn1</code></td>
+        <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a2</span> <span class="src-b">b2</span> ...]</code></td>
+        <td>Interleave even lanes.</td>
+      </tr>
+      <tr>
+        <td><code>trn2</code></td>
+        <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a3</span> <span class="src-b">b3</span> ...]</code></td>
+        <td>Interleave odd lanes.</td>
+      </tr>
+      <tr>
+        <td><code>uzp1</code></td>
+        <td><code>[<span class="src-a">a0</span> <span class="src-a">a2</span> ... <span class="src-b">b0</span> <span class="src-b">b2</span> ...]</code></td>
+        <td>Extract and pack even lanes.</td>
+      </tr>
+      <tr>
+        <td><code>uzp2</code></td>
+        <td><code>[<span class="src-a">a1</span> <span class="src-a">a3</span> ... <span class="src-b">b1</span> <span class="src-b">b3</span> ...]</code></td>
+        <td>Extract and pack odd lanes.</td>
+      </tr>
+      <tr>
+        <td><code>zip1</code></td>
+        <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a1</span> <span class="src-b">b1</span> ...]</code></td>
+        <td>Interleave the low half.</td>
+      </tr>
+      <tr>
+        <td><code>zip2</code></td>
+        <td><code>[<span class="src-a">aN/2</span> <span class="src-b">bN/2</span> ...]</code></td>
+        <td>Interleave the high half.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+The sections below expand those six patterns for each arrangement in the order
+<span class="inline-code">.16b</span>, <span class="inline-code">.8h</span>,
+<span class="inline-code">.4s</span>, and
+<span class="inline-code">.2d</span>.
+</p>
+
+<hr>
+
+<h2 id="section-16b">.16b</h2>
+
+<p>
+Let
+<br>
+<span class="inline-code">vn.16b = [<span class="src-a">a0</span> <span class="src-a">a1</span> <span class="src-a">a2</span> <span class="src-a">a3</span> <span class="src-a">a4</span> <span class="src-a">a5</span> <span class="src-a">a6</span> <span class="src-a">a7</span> <span class="src-a">a8</span> <span class="src-a">a9</span> <span class="src-a">a10</span> <span class="src-a">a11</span> <span class="src-a">a12</span> <span class="src-a">a13</span> <span class="src-a">a14</span> <span class="src-a">a15</span>]</span>
+<br>
+<span class="inline-code">vm.16b = [<span class="src-b">b0</span> <span class="src-b">b1</span> <span class="src-b">b2</span> <span class="src-b">b3</span> <span class="src-b">b4</span> <span class="src-b">b5</span> <span class="src-b">b6</span> <span class="src-b">b7</span> <span class="src-b">b8</span> <span class="src-b">b9</span> <span class="src-b">b10</span> <span class="src-b">b11</span> <span class="src-b">b12</span> <span class="src-b">b13</span> <span class="src-b">b14</span> <span class="src-b">b15</span>]</span>
+<br>
+<span class="inline-code">v0.16b = [x0 x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15]</span>.
+</p>
+
+<div class="tech-subsection">
+  <h3>Mixed-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a2</span> <span class="src-b">b2</span> <span class="src-a">a4</span> <span class="src-b">b4</span> <span class="src-a">a6</span> <span class="src-b">b6</span> <span class="src-a">a8</span> <span class="src-b">b8</span> <span class="src-a">a10</span> <span class="src-b">b10</span> <span class="src-a">a12</span> <span class="src-b">b12</span> <span class="src-a">a14</span> <span class="src-b">b14</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a3</span> <span class="src-b">b3</span> <span class="src-a">a5</span> <span class="src-b">b5</span> <span class="src-a">a7</span> <span class="src-b">b7</span> <span class="src-a">a9</span> <span class="src-b">b9</span> <span class="src-a">a11</span> <span class="src-b">b11</span> <span class="src-a">a13</span> <span class="src-b">b13</span> <span class="src-a">a15</span> <span class="src-b">b15</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-a">a2</span> <span class="src-a">a4</span> <span class="src-a">a6</span> <span class="src-a">a8</span> <span class="src-a">a10</span> <span class="src-a">a12</span> <span class="src-a">a14</span> <span class="src-b">b0</span> <span class="src-b">b2</span> <span class="src-b">b4</span> <span class="src-b">b6</span> <span class="src-b">b8</span> <span class="src-b">b10</span> <span class="src-b">b12</span> <span class="src-b">b14</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-a">a3</span> <span class="src-a">a5</span> <span class="src-a">a7</span> <span class="src-a">a9</span> <span class="src-a">a11</span> <span class="src-a">a13</span> <span class="src-a">a15</span> <span class="src-b">b1</span> <span class="src-b">b3</span> <span class="src-b">b5</span> <span class="src-b">b7</span> <span class="src-b">b9</span> <span class="src-b">b11</span> <span class="src-b">b13</span> <span class="src-b">b15</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a2</span> <span class="src-b">b2</span> <span class="src-a">a3</span> <span class="src-b">b3</span> <span class="src-a">a4</span> <span class="src-b">b4</span> <span class="src-a">a5</span> <span class="src-b">b5</span> <span class="src-a">a6</span> <span class="src-b">b6</span> <span class="src-a">a7</span> <span class="src-b">b7</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[<span class="src-a">a8</span> <span class="src-b">b8</span> <span class="src-a">a9</span> <span class="src-b">b9</span> <span class="src-a">a10</span> <span class="src-b">b10</span> <span class="src-a">a11</span> <span class="src-b">b11</span> <span class="src-a">a12</span> <span class="src-b">b12</span> <span class="src-a">a13</span> <span class="src-b">b13</span> <span class="src-a">a14</span> <span class="src-b">b14</span> <span class="src-a">a15</span> <span class="src-b">b15</span>]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="tech-subsection">
+  <h3>Same-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[x0 x0 x2 x2 x4 x4 x6 x6 x8 x8 x10 x10 x12 x12 x14 x14]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[x1 x1 x3 x3 x5 x5 x7 x7 x9 x9 x11 x11 x13 x13 x15 x15]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[x0 x2 x4 x6 x8 x10 x12 x14 x0 x2 x4 x6 x8 x10 x12 x14]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[x1 x3 x5 x7 x9 x11 x13 x15 x1 x3 x5 x7 x9 x11 x13 x15]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[x0 x0 x1 x1 x2 x2 x3 x3 x4 x4 x5 x5 x6 x6 x7 x7]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[x8 x8 x9 x9 x10 x10 x11 x11 x12 x12 x13 x13 x14 x14 x15 x15]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+This is the fullest form of the pattern, and it makes the lane rules easiest to
+see in complete detail.
+</p>
+
+<hr>
+
+<h2 id="section-8h">.8h</h2>
+
+<p>
+Let
+<br>
+<span class="inline-code">vn.8h = [<span class="src-a">a0</span> <span class="src-a">a1</span> <span class="src-a">a2</span> <span class="src-a">a3</span> <span class="src-a">a4</span> <span class="src-a">a5</span> <span class="src-a">a6</span> <span class="src-a">a7</span>]</span>
+<br>
+<span class="inline-code">vm.8h = [<span class="src-b">b0</span> <span class="src-b">b1</span> <span class="src-b">b2</span> <span class="src-b">b3</span> <span class="src-b">b4</span> <span class="src-b">b5</span> <span class="src-b">b6</span> <span class="src-b">b7</span>]</span>
+<br>
+<span class="inline-code">v0.8h = [x0 x1 x2 x3 x4 x5 x6 x7]</span>.
+</p>
+
+<div class="tech-subsection">
+  <h3>Mixed-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a2</span> <span class="src-b">b2</span> <span class="src-a">a4</span> <span class="src-b">b4</span> <span class="src-a">a6</span> <span class="src-b">b6</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a3</span> <span class="src-b">b3</span> <span class="src-a">a5</span> <span class="src-b">b5</span> <span class="src-a">a7</span> <span class="src-b">b7</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-a">a2</span> <span class="src-a">a4</span> <span class="src-a">a6</span> <span class="src-b">b0</span> <span class="src-b">b2</span> <span class="src-b">b4</span> <span class="src-b">b6</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-a">a3</span> <span class="src-a">a5</span> <span class="src-a">a7</span> <span class="src-b">b1</span> <span class="src-b">b3</span> <span class="src-b">b5</span> <span class="src-b">b7</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a2</span> <span class="src-b">b2</span> <span class="src-a">a3</span> <span class="src-b">b3</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[<span class="src-a">a4</span> <span class="src-b">b4</span> <span class="src-a">a5</span> <span class="src-b">b5</span> <span class="src-a">a6</span> <span class="src-b">b6</span> <span class="src-a">a7</span> <span class="src-b">b7</span>]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="tech-subsection">
+  <h3>Same-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[x0 x0 x2 x2 x4 x4 x6 x6]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[x1 x1 x3 x3 x5 x5 x7 x7]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[x0 x2 x4 x6 x0 x2 x4 x6]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[x1 x3 x5 x7 x1 x3 x5 x7]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[x0 x0 x1 x1 x2 x2 x3 x3]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[x4 x4 x5 x5 x6 x6 x7 x7]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+This follows the same rule as <span class="inline-code">.16b</span>, just with
+half as many lanes.
+</p>
+
+<hr>
+
+<h2 id="section-4s">.4s</h2>
+
+<p>
+Let
+<br>
+<span class="inline-code">vn.4s = [<span class="src-a">a0</span> <span class="src-a">a1</span> <span class="src-a">a2</span> <span class="src-a">a3</span>]</span>
+<br>
+<span class="inline-code">vm.4s = [<span class="src-b">b0</span> <span class="src-b">b1</span> <span class="src-b">b2</span> <span class="src-b">b3</span>]</span>
+<br>
+<span class="inline-code">v0.4s = [x0 x1 x2 x3]</span>.
+</p>
+
+<div class="tech-subsection">
+  <h3>Mixed-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a2</span> <span class="src-b">b2</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span> <span class="src-a">a3</span> <span class="src-b">b3</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-a">a2</span> <span class="src-b">b0</span> <span class="src-b">b2</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-a">a3</span> <span class="src-b">b1</span> <span class="src-b">b3</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span> <span class="src-a">a1</span> <span class="src-b">b1</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[<span class="src-a">a2</span> <span class="src-b">b2</span> <span class="src-a">a3</span> <span class="src-b">b3</span>]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="tech-subsection">
+  <h3>Same-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[x0 x0 x2 x2]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[x1 x1 x3 x3]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[x0 x2 x0 x2]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[x1 x3 x1 x3]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[x0 x0 x1 x1]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[x2 x2 x3 x3]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<p>
+This is the arrangement that usually gives the cleanest intuition for how the
+three instruction families differ.
+</p>
+
+<hr>
+
+<h2 id="section-2d">.2d</h2>
+
+<p>
+Let
+<br>
+<span class="inline-code">vn.2d = [<span class="src-a">a0</span> <span class="src-a">a1</span>]</span>
+<br>
+<span class="inline-code">vm.2d = [<span class="src-b">b0</span> <span class="src-b">b1</span>]</span>
+<br>
+<span class="inline-code">v0.2d = [x0 x1]</span>.
+</p>
+
+<div class="tech-subsection">
+  <h3>Mixed-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[<span class="src-a">a0</span> <span class="src-b">b0</span>]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[<span class="src-a">a1</span> <span class="src-b">b1</span>]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="tech-subsection">
+  <h3>Same-source</h3>
+  <div class="table-wrapper">
+    <table class="tech-table">
+      <thead>
+        <tr>
+          <th>Instruction</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>trn1</code></td>
+          <td><code>[x0 x0]</code></td>
+        </tr>
+        <tr>
+          <td><code>trn2</code></td>
+          <td><code>[x1 x1]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp1</code></td>
+          <td><code>[x0 x0]</code></td>
+        </tr>
+        <tr>
+          <td><code>uzp2</code></td>
+          <td><code>[x1 x1]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip1</code></td>
+          <td><code>[x0 x0]</code></td>
+        </tr>
+        <tr>
+          <td><code>zip2</code></td>
+          <td><code>[x1 x1]</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="note-box">
+  <p>
+  <b>The key point for <span class="inline-code">.2d</span>:</b>
+  when there are only two lanes, <span class="inline-code">trn1</span>,
+  <span class="inline-code">uzp1</span>, and <span class="inline-code">zip1</span>
+  all collapse to lane 0, while <span class="inline-code">trn2</span>,
+  <span class="inline-code">uzp2</span>, and <span class="inline-code">zip2</span>
+  all collapse to lane 1. The arrangement flattens most of the differences away.
+  </p>
+</div>
+
+<hr>
+
+<h2>One-Line Summary</h2>
+
+<p class="code-block">TRN = split by even / odd lanes, then interleave
+UZP = split by even / odd lanes, then extract and pack
+ZIP = split by low half / high half, then interleave</p>
+
+<hr>
+
+</body>
+</html>
