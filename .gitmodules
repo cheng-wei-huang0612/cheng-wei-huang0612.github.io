@@ -1,3 +1,0 @@
-[submodule "astro_feature/sweph-wasm"]
-	path = astro_feature/sweph-wasm
-	url = https://github.com/u-blusky/sweph-wasm.git
