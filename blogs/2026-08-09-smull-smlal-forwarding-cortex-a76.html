@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Measuring SMULL-to-SMLAL Accumulator Forwarding on Cortex-A76 - Cesare Huang</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .inline-code,
+    .code-block {
+      font-family: monospace;
+    }
+
+    .code-block {
+      max-width: 100%;
+      overflow-x: auto;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Measuring <code>SMULL</code>-to-<code>SMLAL</code> Accumulator Forwarding on Cortex-A76</h1>
+<p><a href="../blogs.html">back to blogs</a></p>
+<p><a href="../index.html">back to home</a></p>
+
+<hr>
+
+<p class="blog-meta">
+August 2026
+</p>
+
+<h2>Summary</h2>
+
+<p>
+On a Raspberry Pi 5 with a Cortex-A76 r4p1 core, I measured the following
+operand-specific dependency latencies:
+</p>
+
+<pre class="code-block"><code>Ordinary SMULL/SMLAL result latency             4 cycles
+SMULL → SMLAL accumulator dependency latency    3 cycles
+SMLAL → SMLAL accumulator recurrence latency    1 cycle</code></pre>
+
+<p>
+The 3-cycle <span class="inline-code">SMULL → SMLAL</span> accumulator
+dependency does not appear to be explicitly documented in the Cortex-A76
+Software Optimization Guide.
+</p>
+
+<h2>Background</h2>
+
+<p>
+I had previously assumed that forwarding a <span class="inline-code">SMULL</span>
+result into the accumulator operand of a following
+<span class="inline-code">SMLAL</span> had the same 1-cycle latency as an
+accumulator dependency between two <span class="inline-code">SMLAL</span>
+instructions.
+</p>
+
+<p>That assumption turned out to be incorrect.</p>
+
+<p>
+The Cortex-A76 does provide a shortened forwarding path into the
+<span class="inline-code">SMLAL</span> accumulator operand, but its latency
+depends on the producing instruction:
+</p>
+
+<ul>
+  <li><span class="inline-code">SMULL → SMLAL</span> through the accumulator takes 3 cycles.</li>
+  <li><span class="inline-code">SMLAL → SMLAL</span> through the accumulator takes 1 cycle.</li>
+  <li>An ordinary result dependency takes 4 cycles.</li>
+</ul>
+
+<p>
+This is therefore an operand-specific producer-to-consumer latency, rather
+than a single latency that can be assigned to every use of an
+<span class="inline-code">SMLAL</span> result.
+</p>
+
+<h2>Interpreting the Result</h2>
+
+<p>
+For a <span class="inline-code">SMULL → SMLAL</span> accumulator dependency,
+the measured latency corresponds to the following effective issue schedule:
+</p>
+
+<pre class="code-block"><code>cycle 0: SMULL issues
+cycle 1: the dependent SMLAL cannot issue yet
+cycle 2: the dependent SMLAL cannot issue yet
+cycle 3: the dependent SMLAL can issue</code></pre>
+
+<p>
+For an accumulator recurrence between two <span class="inline-code">SMLAL</span>
+instructions:
+</p>
+
+<pre class="code-block"><code>cycle 0: the first SMLAL issues
+cycle 1: the second SMLAL can issue</code></pre>
+
+<p>These schedules assume that:</p>
+
+<ul>
+  <li>both instructions use the same destination/accumulator register;</li>
+  <li>only the accumulator operand of the consumer is dependent on the producer;</li>
+  <li>the consumer's multiplicand operands are otherwise independent.</li>
+</ul>
+
+<p>
+The issue timings are an interpretation of the measured dependency latencies.
+They were inferred from black-box timing experiments rather than observed
+directly inside the processor pipeline.
+</p>
+
+<h2>Measuring the 3-Cycle Dependency</h2>
+
+<p>
+An independent instruction stream measures throughput, not dependency
+latency. To isolate the <span class="inline-code">SMULL → SMLAL</span>
+accumulator edge, I constructed a closed alternating dependency cycle:
+</p>
+
+<pre class="code-block"><code>smull v0.4s, v0.4h, v16.4h
+smlal v0.4s, v17.4h, v18.4h</code></pre>
+
+<p>This loop contains two dependency edges:</p>
+
+<pre class="code-block"><code>SMLAL result → next SMULL multiplicand     4 cycles
+SMULL result → next SMLAL accumulator      L cycles</code></pre>
+
+<p>
+The alternating chain measured approximately 3.5 cycles per instruction, or
+7 cycles per two-instruction recurrence:
+</p>
+
+<pre class="code-block"><code>4 + L = 7
+L = 3 cycles</code></pre>
+
+<p>
+The 7-cycle value is the recurrence latency of the complete closed dependency
+cycle. It is not the latency of a single
+<span class="inline-code">SMULL → SMLAL</span> edge.
+</p>
+
+<h2>Independent Validation</h2>
+
+<p>I repeated the experiment using two separate timing methods.</p>
+
+<p>
+The first method used the Linux hardware cycle counter through
+<span class="inline-code">PERF_COUNT_HW_CPU_CYCLES</span>. The benchmarks were
+pinned to one core and run under the <span class="inline-code">performance</span>
+governor.
+</p>
+
+<p>
+The second method used <span class="inline-code">CLOCK_MONOTONIC</span> and
+estimated the current CPU frequency with a dependent scalar
+<span class="inline-code">add</span> chain before converting elapsed time into
+cycles.
+</p>
+
+<p>
+Both methods produced the same results for the 16-to-32-bit and 32-to-64-bit
+widening forms:
+</p>
+
+<pre class="code-block"><code>SMULL → SMLAL accumulator dependency    3 cycles
+SMLAL → SMLAL accumulator recurrence    1 cycle</code></pre>
+
+<p>
+I also tested independent instruction mixes against immediate
+<span class="inline-code">SHL</span>, which the Cortex-A76 optimization guide
+identifies as using the complementary vector pipeline. The contention results
+are consistent with <span class="inline-code">SMULL</span> and
+<span class="inline-code">SMLAL</span> sharing the V0/ASIMD0 execution resource.
+</p>
+
+<h2>Why This Matters</h2>
+
+<p>
+A scheduling model that assigns a uniform 4-cycle latency to every
+<span class="inline-code">SMULL</span> and <span class="inline-code">SMLAL</span>
+dependency will miss valid scheduling opportunities.
+</p>
+
+<p>
+Conversely, treating every dependency into an
+<span class="inline-code">SMLAL</span> accumulator as a 1-cycle dependency is too
+optimistic. That value applies to the
+<span class="inline-code">SMLAL → SMLAL</span> accumulator recurrence, but not
+to <span class="inline-code">SMULL → SMLAL</span>.
+</p>
+
+<p>A more accurate scheduling model for the measured Cortex-A76 core is:</p>
+
+<pre class="code-block"><code>Default SMULL/SMLAL result latency               4
+SMULL → SMLAL accumulator latency                3
+SMLAL → SMLAL accumulator recurrence latency     1
+SMULL/SMLAL reciprocal throughput                1</code></pre>
+
+<p>
+This distinction is relevant to instruction schedulers such as SLOTHY,
+particularly in tightly scheduled AdvSIMD arithmetic where one cycle can
+change the resulting instruction order.
+</p>
+
+<h2>Scope</h2>
+
+<p>
+These results were measured on one Raspberry Pi 5 with a Cortex-A76 r4p1 core.
+Both widening forms tested produced the same result:
+</p>
+
+<pre class="code-block"><code>.4h → .4s
+.2s → .2d</code></pre>
+
+<p>
+Other Cortex-A76 revisions and implementations should still be tested
+independently.
+</p>
+
+<p>
+As of my search, I have not found an explicit description of the 3-cycle
+<span class="inline-code">SMULL → SMLAL</span> accumulator dependency in the
+Cortex-A76 Software Optimization Guide or in commonly available public
+instruction-timing results. This is not a claim of absolute novelty, but it
+appears to fill a gap in the currently available documentation.
+</p>
+
+<h2>Reproduction</h2>
+
+<p>
+The complete benchmark sources, raw measurements, disassemblies, and
+reproduction scripts are available in the
+<a href="https://github.com/cheng-wei-huang0612/cortex-a76-smull-forwarding">experiment repository</a>.
+The retained measurements and their derivation are documented in
+<a href="https://github.com/cheng-wei-huang0612/cortex-a76-smull-forwarding/blob/main/RESULTS.md">the detailed results</a>.
+</p>
+
+<p>On the target AArch64 Linux machine, run:</p>
+
+<pre class="code-block"><code>git clone https://github.com/cheng-wei-huang0612/cortex-a76-smull-forwarding.git
+cd cortex-a76-smull-forwarding
+./run_exp</code></pre>
+
+<hr>
+
+</body>
+</html>
