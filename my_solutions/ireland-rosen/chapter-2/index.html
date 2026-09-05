@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Chapter 2: Applications of Unique Factorization. Independent exercise solutions to Ireland and Rosen.">
+  <meta name="color-scheme" content="light">
+  <title>Applications of Unique Factorization · Ireland–Rosen Solutions</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <script defer src="../assets/mathjax-config.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+</head>
+<body>
+  <main id="top" tabindex="-1">
+    <h1>Chapter 2. Applications of Unique Factorization</h1><p><a href="../index.html">back to chapters</a></p><hr><nav class="exercise-nav" aria-label="Exercises in this chapter"><h2>Exercises</h2><p><a href="#p-18-exercise" aria-label="Page 18 exercise">p. 18</a> · <a href="#ex-1" aria-label="Exercise 1">1</a> · <a href="#ex-2" aria-label="Exercise 2">2</a> · <a href="#ex-3" aria-label="Exercise 3">3</a> · <a href="#ex-4" aria-label="Exercise 4">4</a> · <a href="#ex-5" aria-label="Exercise 5">5</a> · <a href="#ex-6" aria-label="Exercise 6">6</a> · <a href="#ex-7" aria-label="Exercise 7">7</a> · <a href="#ex-8" aria-label="Exercise 8">8</a> · <a href="#ex-9" aria-label="Exercise 9">9</a> · <a href="#ex-10" aria-label="Exercise 10">10</a> · <a href="#ex-11" aria-label="Exercise 11">11</a> · <a href="#ex-12" aria-label="Exercise 12">12</a> · <a href="#ex-13" aria-label="Exercise 13">13</a> · <a href="#ex-14" aria-label="Exercise 14">14</a></p></nav><p class="math-status" id="math-status" role="status">Loading mathematical notation… If it does not load, check your connection or allow the MathJax script.</p><noscript><p>Enable JavaScript to typeset formulas. The original TeX notation is shown below.</p></noscript><section class="exercise" id="p-18-exercise">
+<h2><a href="#p-18-exercise">Page 18 exercise</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(a/b\in\mathbb{Z}_p\)</span> be a nonunit. By definition, <span class="math inline">\(p\nmid b\)</span>, and an element <span class="math inline">\(a/b\in\mathbb{Z}_p\)</span> is a unit exactly when <span class="math inline">\(p\nmid a\)</span>. Hence <span class="math inline">\(p\mid a\)</span>.</p>
+<p>We claim that <span class="math inline">\(p\nmid a+b\)</span>. Indeed, if <span class="math inline">\(p\mid a+b\)</span>, then together with <span class="math inline">\(p\mid a\)</span> we would obtain <span class="math display">\[p\mid(a+b)-a=b,\]</span> contradicting <span class="math inline">\(p\nmid b\)</span>. Therefore <span class="math display">\[\frac{b}{a+b}\in\mathbb{Z}_p.\]</span> Finally, <span class="math display">\[\left(\frac{a}{b}+1\right)\frac{b}{a+b}
+  =\frac{a+b}{b}\frac{b}{a+b}=1.\]</span> Thus <span class="math inline">\(b/(a+b)\)</span> is the inverse of <span class="math inline">\(a/b+1\)</span>, so <span class="math inline">\(a/b+1\)</span> is a unit in <span class="math inline">\(\mathbb{Z}_p\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-1">
+<h2><a href="#ex-1">Exercise 1</a></h2>
+<div class="solution">
+<p>Suppose, toward a contradiction, that <span class="math inline">\(k[x]\)</span> has only finitely many monic irreducible polynomials, say <span class="math display">\[p_1(x),p_2(x),\ldots,p_\ell(x).\]</span> Consider the nonconstant polynomial <span class="math display">\[f(x)=p_1(x)p_2(x)\cdots p_\ell(x)+1.\]</span> For every <span class="math inline">\(i\)</span>, <span class="math display">\[f(x)\equiv1\pmod{p_i(x)},\]</span> so none of <span class="math inline">\(p_1(x),\ldots,p_\ell(x)\)</span> divides <span class="math inline">\(f(x)\)</span>.</p>
+<p>Since <span class="math inline">\(k[x]\)</span> is a Euclidean domain, the nonconstant polynomial <span class="math inline">\(f(x)\)</span> has an irreducible divisor <span class="math inline">\(q(x)\)</span>. Replacing <span class="math inline">\(q(x)\)</span> by its monic associate, we may assume that <span class="math inline">\(q(x)\)</span> is monic. It must then be one of the polynomials <span class="math inline">\(p_1(x),\ldots,p_\ell(x)\)</span>, contradicting the fact that none of them divides <span class="math inline">\(f(x)\)</span>. Therefore <span class="math inline">\(k[x]\)</span> has infinitely many monic irreducible polynomials.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-2">
+<h2><a href="#ex-2">Exercise 2</a></h2>
+<div class="solution">
+<p>Discarding repetitions, we may assume that <span class="math inline">\(p_1,\ldots,p_t\)</span> are distinct. Let <span class="math inline">\(R\)</span> denote the given set, and for <span class="math inline">\(r=a/b\in\mathbb{Q}^\times\)</span> define <span class="math display">\[v_i(r)=\operatorname{ord}_{p_i}(a)-\operatorname{ord}_{p_i}(b),
+  \qquad i=1,\ldots,t.\]</span> This is independent of the representation <span class="math inline">\(a/b\)</span>, and the defining condition for <span class="math inline">\(R\)</span> is simply <span class="math inline">\(v_i(r)\geq0\)</span> for every <span class="math inline">\(i\)</span>. We also put <span class="math inline">\(v_i(0)=+\infty\)</span>.</p>
+<p>The valuation identities give <span class="math display">\[v_i(rs)=v_i(r)+v_i(s),\qquad
+  v_i(r+s)\geq\min\{v_i(r),v_i(s)\},\qquad
+  v_i(-r)=v_i(r).\]</span> Thus <span class="math inline">\(R\)</span> contains <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> and is closed under addition, multiplication, and additive inverses. Hence <span class="math inline">\(R\)</span> is a subring of <span class="math inline">\(\mathbb{Q}\)</span>.</p>
+<p>For a nonzero <span class="math inline">\(r\in R\)</span>, <span class="math display">\[r\in R^\times
+  \quad\Longleftrightarrow\quad r^{-1}\in R
+  \quad\Longleftrightarrow\quad -v_i(r)\geq0\ \text{for every }i
+  \quad\Longleftrightarrow\quad v_i(r)=0\ \text{for every }i.\]</span> In other words, <span class="math inline">\(r=a/b\)</span> is a unit precisely when the powers of every <span class="math inline">\(p_i\)</span> in the numerator and denominator cancel completely.</p>
+<p>Now let <span class="math inline">\(0\neq r\in R\)</span>, put <span class="math inline">\(e_i=v_i(r)\)</span>, and set <span class="math display">\[u=r\,p_1^{-e_1}\cdots p_t^{-e_t}.\]</span> Then <span class="math inline">\(v_i(u)=0\)</span> for every <span class="math inline">\(i\)</span>, so <span class="math inline">\(u\)</span> is a unit, and <span class="math display">\[r=u p_1^{e_1}\cdots p_t^{e_t}.\]</span></p>
+<p>It remains to identify the prime elements. For <span class="math inline">\(r\in R\)</span>, <span class="math display">\[p_i\mid r
+  \quad\Longleftrightarrow\quad \frac{r}{p_i}\in R
+  \quad\Longleftrightarrow\quad v_i(r)\geq1.\]</span> Consequently, if <span class="math inline">\(p_i\mid rs\)</span>, then <span class="math inline">\(v_i(r)+v_i(s)=v_i(rs)\geq1\)</span>. Since <span class="math inline">\(v_i(r)\)</span> and <span class="math inline">\(v_i(s)\)</span> are nonnegative integers, one of them is at least <span class="math inline">\(1\)</span>; hence <span class="math inline">\(p_i\mid r\)</span> or <span class="math inline">\(p_i\mid s\)</span>. Moreover, <span class="math inline">\(v_i(p_i)=1\)</span>, so <span class="math inline">\(p_i\)</span> is not a unit. Therefore each <span class="math inline">\(p_i\)</span> is prime in <span class="math inline">\(R\)</span>.</p>
+<p>Conversely, let <span class="math inline">\(\pi\)</span> be a prime element of <span class="math inline">\(R\)</span>. A prime element in an integral domain is irreducible, and the factorization above gives <span class="math display">\[\pi=u p_1^{e_1}\cdots p_t^{e_t}.\]</span> Because <span class="math inline">\(\pi\)</span> is a nonunit, some <span class="math inline">\(e_i\)</span> is positive. Irreducibility forces exactly one exponent, say <span class="math inline">\(e_j\)</span>, to be <span class="math inline">\(1\)</span> and all the others to be <span class="math inline">\(0\)</span>; otherwise the displayed product would split <span class="math inline">\(\pi\)</span> into two nonunits. Thus <span class="math inline">\(\pi=u p_j\)</span>, so <span class="math inline">\(\pi\)</span> is associated to <span class="math inline">\(p_j\)</span>. Hence, up to associates, <span class="math inline">\(p_1,\ldots,p_t\)</span> are the only primes of <span class="math inline">\(R\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-3">
+<h2><a href="#ex-3">Exercise 3</a></h2>
+<div class="solution">
+<p>Suppose, toward a contradiction, that there are only finitely many primes, say <span class="math inline">\(p_1,\ldots,p_t\)</span>, and put <span class="math display">\[n=p_1p_2\cdots p_t.\]</span> Every integer <span class="math inline">\(a\)</span> with <span class="math inline">\(2\leq a&lt;n\)</span> has a prime divisor <span class="math inline">\(p_i\)</span>. Since <span class="math inline">\(p_i\mid n\)</span>, we have <span class="math inline">\((a,n)&gt;1\)</span>. Thus only <span class="math inline">\(1\)</span> among <span class="math inline">\(1,2,\ldots,n-1\)</span> is relatively prime to <span class="math inline">\(n\)</span>, so <span class="math display">\[\phi(n)=1.\]</span></p>
+<p>On the other hand, the formula for Euler’s phi function gives <span class="math display">\[\phi(n)
+  =n\prod_{p\mid n}\left(1-\frac1p\right)
+  =\prod_{i=1}^t(p_i-1).\]</span> The list contains both <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span>, and therefore <span class="math display">\[\phi(n)=\prod_{i=1}^t(p_i-1)\geq(2-1)(3-1)=2,\]</span> contradicting <span class="math inline">\(\phi(n)=1\)</span>. Hence there are infinitely many primes.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-4">
+<h2><a href="#ex-4">Exercise 4</a></h2>
+<div class="solution">
+<p>First let <span class="math inline">\(p\)</span> be an odd prime such that <span class="math display">\[p\mid a^{2^m}+1.\]</span> Then <span class="math inline">\(a^{2^m}\equiv-1\pmod p\)</span>. Since <span class="math inline">\(n&gt;m\)</span>, the integer <span class="math inline">\(2^{n-m}\)</span> is even, and hence <span class="math display">\[a^{2^n}
+  =a^{2^m2^{n-m}}
+  =\left(a^{2^m}\right)^{2^{n-m}}
+  \equiv(-1)^{2^{n-m}}
+  \equiv1\pmod p.\]</span> Thus <span class="math inline">\(p\mid a^{2^n}-1\)</span>.</p>
+<p>Suppose now that <span class="math inline">\(p\)</span> divides both <span class="math inline">\(a^{2^m}+1\)</span> and <span class="math inline">\(a^{2^n}+1\)</span>. The preceding calculation also gives <span class="math inline">\(p\mid a^{2^n}-1\)</span>, so <span class="math display">\[p\mid\bigl(a^{2^n}+1\bigr)-\bigl(a^{2^n}-1\bigr)=2.\]</span> This is impossible because <span class="math inline">\(p\)</span> is odd. Therefore the two given numbers have no common odd prime divisor, and their greatest common divisor is a power of <span class="math inline">\(2\)</span>.</p>
+<p>If <span class="math inline">\(a\)</span> is even, then both <span class="math inline">\(a^{2^n}+1\)</span> and <span class="math inline">\(a^{2^m}+1\)</span> are odd. Their greatest common divisor is therefore odd and at the same time a power of <span class="math inline">\(2\)</span>, so it equals <span class="math inline">\(1\)</span>.</p>
+<p>If <span class="math inline">\(a\)</span> is odd, then both numbers are even, so their greatest common divisor is at least <span class="math inline">\(2\)</span>. Moreover, <span class="math inline">\(n\geq1\)</span> and <span class="math display">\[a^{2^n}=\left(a^2\right)^{2^{n-1}}\equiv1\pmod4,\]</span> whence <span class="math inline">\(a^{2^n}+1\equiv2\pmod4\)</span>. Thus their greatest common divisor is not divisible by <span class="math inline">\(4\)</span>. Being a power of <span class="math inline">\(2\)</span>, it must equal <span class="math inline">\(2\)</span>. Therefore <span class="math display">\[\left(a^{2^n}+1,a^{2^m}+1\right)
+  =
+  \begin{cases}
+    1,&amp; a\text{ is even},\\
+    2,&amp; a\text{ is odd}.
+  \end{cases}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-5">
+<h2><a href="#ex-5">Exercise 5</a></h2>
+<div class="solution">
+<p>For <span class="math inline">\(n\geq0\)</span>, set <span class="math display">\[N_n=2^{2^n}+1.\]</span> Since <span class="math inline">\(2\)</span> is even, Exercise 4 shows that <span class="math display">\[(N_m,N_n)=1\qquad(m\neq n).\]</span> Thus the integers <span class="math inline">\(N_0,N_1,N_2,\ldots\)</span> are pairwise relatively prime.</p>
+<p>Each <span class="math inline">\(N_n\)</span> is greater than <span class="math inline">\(1\)</span>, so it has a prime divisor; choose one and call it <span class="math inline">\(q_n\)</span>. If <span class="math inline">\(q_m=q_n\)</span> for some <span class="math inline">\(m\neq n\)</span>, then this prime would divide both <span class="math inline">\(N_m\)</span> and <span class="math inline">\(N_n\)</span>, and hence would divide <span class="math inline">\((N_m,N_n)=1\)</span>, which is impossible. Therefore <span class="math inline">\(q_0,q_1,q_2,\ldots\)</span> are distinct primes, proving that there are infinitely many primes.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-6">
+<h2><a href="#ex-6">Exercise 6</a></h2>
+<div class="solution">
+<p>In the product <span class="math display">\[n!=1\cdot2\cdots n,\]</span> every multiple of <span class="math inline">\(p\)</span> contributes at least one factor of <span class="math inline">\(p\)</span>. There are <span class="math inline">\(\lfloor n/p\rfloor\)</span> such multiples. Among them, the multiples of <span class="math inline">\(p^2\)</span> contribute one additional factor of <span class="math inline">\(p\)</span>, and there are <span class="math inline">\(\lfloor n/p^2\rfloor\)</span> of these. Likewise, the multiples of <span class="math inline">\(p^3\)</span> contribute yet another factor of <span class="math inline">\(p\)</span>, and so on. Adding these successive layers gives <span class="math display">\[\operatorname{ord}_p(n!)
+  =\left\lfloor\frac{n}{p}\right\rfloor
+   +\left\lfloor\frac{n}{p^2}\right\rfloor
+   +\left\lfloor\frac{n}{p^3}\right\rfloor+\cdots.\]</span></p>
+<p>Equivalently, this counting can be written compactly as <span class="math display">\[\operatorname{ord}_p(n!)
+  =\sum_{j=1}^{n}\operatorname{ord}_p(j)
+  =\sum_{k\geq1}\#\{j\leq n:p^k\mid j\}
+  =\sum_{k\geq1}\left\lfloor\frac{n}{p^k}\right\rfloor.\]</span> When <span class="math inline">\(p^k&gt;n\)</span>, the corresponding summand is zero, so the displayed sum has only finitely many nonzero terms.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-7">
+<h2><a href="#ex-7">Exercise 7</a></h2>
+<div class="solution">
+<p>By Exercise 6 and the inequality <span class="math inline">\(\lfloor x\rfloor\leq x\)</span>, <span class="math display">\[\begin{aligned}
+  \operatorname{ord}_p(n!)
+    &amp;=\sum_{k\geq1}\left\lfloor\frac{n}{p^k}\right\rfloor\\
+    &amp;\leq n\sum_{k\geq1}\frac{1}{p^k}\\
+    &amp;=n\left(\frac1p+\frac1{p^2}+\frac1{p^3}+\cdots\right)\\
+    &amp;=n\frac{1/p}{1-1/p}
+     =\frac{n}{p-1}.
+  \end{aligned}\]</span></p>
+<p>For the second inequality, use the prime factorization of <span class="math inline">\(n!\)</span>: <span class="math display">\[n!=\prod_{p\mid n!}p^{\operatorname{ord}_p(n!)}.\]</span> Taking <span class="math inline">\(n\)</span>th roots and applying the preceding estimate to each prime gives <span class="math display">\[\begin{aligned}
+  \sqrt[n]{n!}
+    &amp;=\prod_{p\mid n!}p^{\operatorname{ord}_p(n!)/n}\\
+    &amp;\leq\prod_{p\mid n!}p^{1/(p-1)}.
+  \end{aligned}\]</span> Thus the second assertion follows by comparing, prime by prime, the exponents in the factorization of <span class="math inline">\(n!\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-8">
+<h2><a href="#ex-8">Exercise 8</a></h2>
+<div class="solution">
+<p>First pair the two copies of <span class="math inline">\(n!\)</span> in opposite orders: <span class="math display">\[(n!)^2
+  =\prod_{k=1}^{n}k(n+1-k).\]</span> For <span class="math inline">\(1\leq k\leq n\)</span>, <span class="math display">\[k(n+1-k)-n=(k-1)(n-k)\geq0,\]</span> so every factor in the product is at least <span class="math inline">\(n\)</span>. Hence <span class="math display">\[(n!)^2\geq n^n,
+  \qquad\text{and therefore}\qquad
+  \sqrt[n]{n!}\geq\sqrt n.\]</span></p>
+<p>Combining this with Exercise 7 gives <span class="math display">\[\sqrt n
+  \leq\sqrt[n]{n!}
+  \leq\prod_{p\mid n!}p^{1/(p-1)}
+  =\prod_{p\leq n}p^{1/(p-1)}.\]</span></p>
+<p>Suppose, toward a contradiction, that there are only finitely many primes, say <span class="math inline">\(p_1,\ldots,p_t\)</span>. For every <span class="math inline">\(n\geq\max\{p_1,\ldots,p_t\}\)</span>, the rightmost product is the fixed constant <span class="math display">\[C=\prod_{i=1}^{t}p_i^{1/(p_i-1)}.\]</span> The preceding inequality would then imply <span class="math inline">\(\sqrt n\leq C\)</span> for arbitrarily large <span class="math inline">\(n\)</span>, which is impossible because <span class="math inline">\(\sqrt n\to\infty\)</span>. Therefore there are infinitely many primes.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-9">
+<h2><a href="#ex-9">Exercise 9</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(n&gt;1\)</span>. By unique factorization, <span class="math display">\[n=p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r},\]</span> where <span class="math inline">\(p_1,\ldots,p_r\)</span> are distinct primes. The prime powers in this factorization are pairwise relatively prime, so repeated application of multiplicativity gives <span class="math display">\[f(n)
+  =f\left(p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}\right)
+  =\prod_{i=1}^{r}f\left(p_i^{e_i}\right).\]</span> Thus the values of <span class="math inline">\(f\)</span> on prime powers determine its value at every positive integer. Notice that multiplicativity alone does not imply <span class="math inline">\(f(p^e)=f(p)^e\)</span>, since powers of the same prime are not relatively prime.</p>
+</div>
+<div class="remark">
+<p>Here a multiplicative function is understood in the standard sense as an arithmetic function on the positive integers, with <span class="math inline">\(f(1)=1\)</span>. If “integers” is interpreted literally as all of <span class="math inline">\(\mathbb{Z}\)</span>, then the values on positive prime powers do not by themselves determine <span class="math inline">\(f(-1)\)</span> or <span class="math inline">\(f(0)\)</span>. Indeed, for <span class="math inline">\(n&gt;0\)</span> one has <span class="math display">\[f(-n)=f(-1)f(n),\]</span> because <span class="math inline">\((-1,n)=1\)</span>, while the value at <span class="math inline">\(0\)</span> requires a separate convention. Hence the statement for all of <span class="math inline">\(\mathbb{Z}\)</span> needs these additional data.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-10">
+<h2><a href="#ex-10">Exercise 10</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\((a,b)=1\)</span>. The essential point is the following bijection between divisors: <span class="math display">\[\{d:d\mid ab\}
+  \longleftrightarrow
+  \{(d_1,d_2):d_1\mid a,\ d_2\mid b\},
+  \qquad d=d_1d_2.\]</span> Indeed, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> have disjoint sets of prime divisors. Given <span class="math inline">\(d\mid ab\)</span>, put into <span class="math inline">\(d_1\)</span> the prime-power factors of <span class="math inline">\(d\)</span> coming from <span class="math inline">\(a\)</span>, and into <span class="math inline">\(d_2\)</span> those coming from <span class="math inline">\(b\)</span>. This gives <span class="math inline">\(d_1\mid a\)</span>, <span class="math inline">\(d_2\mid b\)</span>, and <span class="math inline">\(d=d_1d_2\)</span>. Unique factorization makes this decomposition unique. Conversely, every such pair produces a divisor <span class="math inline">\(d_1d_2\)</span> of <span class="math inline">\(ab\)</span>.</p>
+<p>Moreover, <span class="math inline">\((d_1,d_2)=1\)</span>, since <span class="math inline">\(d_1\mid a\)</span>, <span class="math inline">\(d_2\mid b\)</span>, and <span class="math inline">\((a,b)=1\)</span>. Therefore multiplicativity of <span class="math inline">\(f\)</span> gives <span class="math display">\[f(d_1d_2)=f(d_1)f(d_2).\]</span> Using the bijection above, we may now rewrite the divisor sum as <span class="math display">\[\begin{aligned}
+  g(ab)
+    &amp;=\sum_{d\mid ab}f(d)\\
+    &amp;=\sum_{\substack{d_1\mid a\\d_2\mid b}}f(d_1d_2)\\
+    &amp;=\sum_{\substack{d_1\mid a\\d_2\mid b}}f(d_1)f(d_2)\\
+    &amp;=\left(\sum_{d_1\mid a}f(d_1)\right)
+      \left(\sum_{d_2\mid b}f(d_2)\right)\\
+    &amp;=g(a)g(b).
+  \end{aligned}\]</span> Hence <span class="math inline">\(g\)</span> is multiplicative.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-11">
+<h2><a href="#ex-11">Exercise 11</a></h2>
+<div class="solution">
+<p>Define <span class="math display">\[h(n)=\frac{\mu(n)}{n}.\]</span> If <span class="math inline">\((a,b)=1\)</span>, then multiplicativity of <span class="math inline">\(\mu\)</span> gives <span class="math display">\[h(ab)
+  =\frac{\mu(ab)}{ab}
+  =\frac{\mu(a)\mu(b)}{ab}
+  =h(a)h(b).\]</span> Thus <span class="math inline">\(h\)</span> is multiplicative. By Exercise 10, its divisor sum <span class="math display">\[H(n)=\sum_{d\mid n}h(d)
+      =\sum_{d\mid n}\frac{\mu(d)}{d}\]</span> is also multiplicative. Since the function <span class="math inline">\(n\mapsto n\)</span> is completely multiplicative, the pointwise product <span class="math display">\[F(n)=nH(n)=n\sum_{d\mid n}\frac{\mu(d)}{d}\]</span> is multiplicative as well.</p>
+<p>It remains to compare <span class="math inline">\(F\)</span> with <span class="math inline">\(\phi\)</span> on prime powers. For a prime <span class="math inline">\(p\)</span> and <span class="math inline">\(e\geq1\)</span>, the only divisors of <span class="math inline">\(p^e\)</span> on which <span class="math inline">\(\mu\)</span> is nonzero are <span class="math inline">\(1\)</span> and <span class="math inline">\(p\)</span>. Therefore <span class="math display">\[\begin{aligned}
+  F(p^e)
+    &amp;=p^e\sum_{d\mid p^e}\frac{\mu(d)}{d}\\
+    &amp;=p^e\left(1-\frac1p\right)\\
+    &amp;=p^e-p^{e-1}
+     =\phi(p^e).
+  \end{aligned}\]</span> Both <span class="math inline">\(F\)</span> and <span class="math inline">\(\phi\)</span> are multiplicative and agree on every prime power. Exercise 9 therefore implies that they agree on every positive integer. Consequently, <span class="math display">\[\phi(n)=n\sum_{d\mid n}\frac{\mu(d)}{d}.\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-12">
+<h2><a href="#ex-12">Exercise 12</a></h2>
+<div class="solution">
+<p>Write <span class="math display">\[n=p_1^{e_1}\cdots p_r^{e_r}.\]</span> If a divisor <span class="math inline">\(d\)</span> contains the square of a prime, then <span class="math inline">\(\mu(d)=0\)</span>. Consequently, only the squarefree divisors contribute to any of the three sums. These divisors are indexed by subsets <span class="math inline">\(S\subseteq\{1,\ldots,r\}\)</span>: <span class="math display">\[d=\prod_{i\in S}p_i,\qquad
+  \mu(d)=(-1)^{|S|},\qquad
+  \phi(d)=\prod_{i\in S}(p_i-1).\]</span></p>
+<p>For the first sum, expansion of a finite product gives <span class="math display">\[\begin{aligned}
+  \sum_{d\mid n}\mu(d)\phi(d)
+    &amp;=\sum_{S\subseteq\{1,\ldots,r\}}
+      (-1)^{|S|}\prod_{i\in S}(p_i-1)\\
+    &amp;=\prod_{i=1}^{r}\bigl(1-(p_i-1)\bigr)\\
+    &amp;=\prod_{p\mid n}(2-p).
+  \end{aligned}\]</span></p>
+<p>Similarly, <span class="math display">\[\begin{aligned}
+  \sum_{d\mid n}\mu(d)^2\phi(d)^2
+    &amp;=\sum_{S\subseteq\{1,\ldots,r\}}
+      \prod_{i\in S}(p_i-1)^2\\
+    &amp;=\prod_{p\mid n}\bigl(1+(p-1)^2\bigr)\\
+    &amp;=\prod_{p\mid n}(p^2-2p+2),
+  \end{aligned}\]</span> and <span class="math display">\[\begin{aligned}
+  \sum_{d\mid n}\frac{\mu(d)}{\phi(d)}
+    &amp;=\sum_{S\subseteq\{1,\ldots,r\}}
+      (-1)^{|S|}\prod_{i\in S}\frac{1}{p_i-1}\\
+    &amp;=\prod_{p\mid n}\left(1-\frac{1}{p-1}\right)\\
+    &amp;=\prod_{p\mid n}\frac{p-2}{p-1}.
+  \end{aligned}\]</span> The formulas also hold for <span class="math inline">\(n=1\)</span>, with each empty product interpreted as <span class="math inline">\(1\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-13">
+<h2><a href="#ex-13">Exercise 13</a></h2>
+<div class="solution">
+<p>For a fixed integer <span class="math inline">\(k\geq0\)</span>, let <span class="math inline">\(f_k(n)=n^k\)</span>. Since <span class="math display">\[f_k(ab)=(ab)^k=a^kb^k=f_k(a)f_k(b),\]</span> the function <span class="math inline">\(f_k\)</span> is completely multiplicative. Exercise 10 therefore shows that its divisor sum <span class="math display">\[\sigma_k(n)=\sum_{d\mid n}f_k(d)=\sum_{d\mid n}d^k\]</span> is multiplicative.</p>
+<p>To obtain the formula, write <span class="math display">\[n=p_1^{e_1}\cdots p_r^{e_r}.\]</span> Every divisor of <span class="math inline">\(n\)</span> has a unique representation <span class="math display">\[d=p_1^{j_1}\cdots p_r^{j_r},
+  \qquad 0\leq j_i\leq e_i.\]</span> Consequently, <span class="math display">\[\begin{aligned}
+  \sigma_k(n)
+    &amp;=\sum_{j_1=0}^{e_1}\cdots\sum_{j_r=0}^{e_r}
+      p_1^{kj_1}\cdots p_r^{kj_r}\\
+    &amp;=\prod_{i=1}^{r}
+      \left(1+p_i^k+p_i^{2k}+\cdots+p_i^{e_i k}\right).
+  \end{aligned}\]</span> Thus <span class="math display">\[\sigma_k(n)
+  =\prod_{p^e\parallel n}
+    \left(1+p^k+p^{2k}+\cdots+p^{ek}\right).\]</span> For <span class="math inline">\(k&gt;0\)</span>, the geometric-series formula gives the equivalent expression <span class="math display">\[\sigma_k(n)
+  =\prod_{p^e\parallel n}
+    \frac{p^{k(e+1)}-1}{p^k-1}.\]</span> When <span class="math inline">\(k=0\)</span>, one instead obtains the number of positive divisors of <span class="math inline">\(n\)</span>: <span class="math display">\[\sigma_0(n)=\prod_{p^e\parallel n}(e+1).\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-14">
+<h2><a href="#ex-14">Exercise 14</a></h2>
+<div class="solution">
+<p><em>Short proof using Dirichlet convolution.</em> The function in the exercise is precisely the Dirichlet convolution <span class="math inline">\(h=\mu*f\)</span>, since <span class="math inline">\(h(n)=\sum_{d\mid n}\mu(n/d)f(d)\)</span>. Both <span class="math inline">\(\mu\)</span> and <span class="math inline">\(f\)</span> are multiplicative, and the Dirichlet convolution of two multiplicative functions is multiplicative. Hence <span class="math inline">\(h\)</span> is multiplicative.</p>
+<p><em>Direct proof in detail.</em> Let <span class="math inline">\((a,b)=1\)</span>. Because <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> have no prime factor in common, every divisor <span class="math inline">\(d\)</span> of <span class="math inline">\(ab\)</span> can be written uniquely as <span class="math display">\[d=d_1d_2,
+  \qquad d_1\mid a,
+  \qquad d_2\mid b.\]</span> Indeed, the prime-power factors of <span class="math inline">\(d\)</span> coming from <span class="math inline">\(a\)</span> form <span class="math inline">\(d_1\)</span>, and those coming from <span class="math inline">\(b\)</span> form <span class="math inline">\(d_2\)</span>. In particular, <span class="math display">\[(d_1,d_2)=1
+  \qquad\text{and}\qquad
+  \left(\frac{a}{d_1},\frac{b}{d_2}\right)=1.\]</span> Using the multiplicativity of <span class="math inline">\(f\)</span> and <span class="math inline">\(\mu\)</span>, the required identity <span class="math inline">\(h(ab)=h(a)h(b)\)</span> follows: <span class="math display">\[\begin{aligned}
+  h(ab)
+    &amp;=\sum_{d\mid ab}\mu\left(\frac{ab}{d}\right)f(d)\\
+    &amp;=\sum_{d_1\mid a}\sum_{d_2\mid b}
+      \mu\left(\frac{a}{d_1}\frac{b}{d_2}\right)f(d_1d_2)\\
+    &amp;=\sum_{d_1\mid a}\sum_{d_2\mid b}
+      \mu\left(\frac{a}{d_1}\right)
+      \mu\left(\frac{b}{d_2}\right)f(d_1)f(d_2)\\
+    &amp;=\left(\sum_{d_1\mid a}
+      \mu\left(\frac{a}{d_1}\right)f(d_1)\right)
+      \left(\sum_{d_2\mid b}
+      \mu\left(\frac{b}{d_2}\right)f(d_2)\right)\\
+    &amp;=h(a)h(b).
+  \end{aligned}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+
+    <nav class="pagination" aria-label="Page navigation"><p><a rel="prev" href="../chapter-1/index.html">← Chapter 1</a> · <a href="../index.html">all chapters</a></p></nav>
+    <hr>
+    <footer>Independent solutions. Refer to Ireland and Rosen for the exercise statements.</footer>
+  </main>
+</body>
+</html>

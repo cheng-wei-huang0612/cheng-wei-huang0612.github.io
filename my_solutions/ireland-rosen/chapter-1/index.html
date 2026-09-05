@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Chapter 1: Unique Factorization. Independent exercise solutions to Ireland and Rosen.">
+  <meta name="color-scheme" content="light">
+  <title>Unique Factorization · Ireland–Rosen Solutions</title>
+  <link rel="stylesheet" href="../assets/site.css">
+  <script defer src="../assets/mathjax-config.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+</head>
+<body>
+  <main id="top" tabindex="-1">
+    <h1>Chapter 1. Unique Factorization</h1><p><a href="../index.html">back to chapters</a></p><hr><nav class="exercise-nav" aria-label="Exercises in this chapter"><h2>Exercises</h2><p><a href="#ex-1" aria-label="Exercise 1">1</a> · <a href="#ex-2" aria-label="Exercise 2">2</a> · <a href="#ex-3" aria-label="Exercise 3">3</a> · <a href="#ex-4" aria-label="Exercise 4">4</a> · <a href="#ex-5" aria-label="Exercise 5">5</a> · <a href="#ex-6" aria-label="Exercise 6">6</a> · <a href="#ex-7" aria-label="Exercise 7">7</a> · <a href="#ex-8" aria-label="Exercise 8">8</a> · <a href="#ex-9" aria-label="Exercise 9">9</a> · <a href="#ex-10" aria-label="Exercise 10">10</a> · <a href="#ex-11" aria-label="Exercise 11">11</a> · <a href="#ex-12" aria-label="Exercise 12">12</a> · <a href="#ex-13" aria-label="Exercise 13">13</a> · <a href="#ex-14" aria-label="Exercise 14">14</a> · <a href="#ex-15" aria-label="Exercise 15">15</a> · <a href="#ex-16" aria-label="Exercise 16">16</a> · <a href="#ex-17" aria-label="Exercise 17">17</a> · <a href="#ex-18" aria-label="Exercise 18">18</a> · <a href="#ex-19" aria-label="Exercise 19">19</a> · <a href="#ex-20" aria-label="Exercise 20">20</a> · <a href="#ex-21" aria-label="Exercise 21">21</a> · <a href="#ex-22" aria-label="Exercise 22">22</a> · <a href="#ex-23" aria-label="Exercise 23">23</a> · <a href="#ex-24" aria-label="Exercise 24">24</a> · <a href="#ex-25" aria-label="Exercise 25">25</a> · <a href="#ex-26" aria-label="Exercise 26">26</a> · <a href="#ex-27" aria-label="Exercise 27">27</a> · <a href="#ex-28" aria-label="Exercise 28">28</a> · <a href="#ex-29" aria-label="Exercise 29">29</a> · <a href="#ex-30" aria-label="Exercise 30">30</a> · <a href="#ex-31" aria-label="Exercise 31">31</a> · <a href="#ex-32" aria-label="Exercise 32">32</a> · <a href="#ex-33" aria-label="Exercise 33">33</a> · <a href="#ex-34" aria-label="Exercise 34">34</a> · <a href="#ex-35" aria-label="Exercise 35">35</a> · <a href="#ex-36" aria-label="Exercise 36">36</a> · <a href="#ex-37" aria-label="Exercise 37">37</a> · <a href="#ex-38" aria-label="Exercise 38">38</a> · <a href="#ex-39" aria-label="Exercise 39">39</a></p></nav><p class="math-status" id="math-status" role="status">Loading mathematical notation… If it does not load, check your connection or allow the MathJax script.</p><noscript><p>Enable JavaScript to typeset formulas. The original TeX notation is shown below.</p></noscript><section class="exercise" id="ex-1">
+<h2><a href="#ex-1">Exercise 1</a></h2>
+<div class="solution">
+<p>For every <span class="math inline">\(d\in\mathbb{Z}\)</span>, <span class="math display">\[d\mid a\text{ and }d\mid b
+  \iff d\mid b\text{ and }d\mid(a-qb)=r.\]</span> Thus <span class="math inline">\((a,b)\)</span> and <span class="math inline">\((b,r)\)</span> have the same common divisors, so <span class="math inline">\((a,b)=(b,r)\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-2">
+<h2><a href="#ex-2">Exercise 2</a></h2>
+<div class="solution">
+<p>By Problem 1, <span class="math display">\[(a,b)=(b,r)=(r,r_1)=(r_1,r_2)=\cdots.\]</span> The nonnegative remainders strictly decrease until one is zero, so the process terminates. If <span class="math inline">\(r_{k+1}\)</span> is the last nonzero remainder, then <span class="math display">\[(a,b)=\cdots=(r_k,r_{k+1})=(r_{k+1},0)=r_{k+1}.\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-3">
+<h2><a href="#ex-3">Exercise 3</a></h2>
+<div class="solution">
+<p><span class="math display">\[\begin{aligned}
+  (187,221)
+    &amp;=(187,34)=(34,17)=17,\\
+  (6188,4709)
+    &amp;=(4709,1479)=(1479,272)=(272,119)\\
+    &amp;=(119,34)=(34,17)=17,\\
+  (314,159)
+    &amp;=(159,155)=(155,4)=(4,3)=(3,1)=1.
+\end{aligned}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-4">
+<h2><a href="#ex-4">Exercise 4</a></h2>
+<div class="solution">
+<p>Index the Euclidean divisions by <span class="math display">\[r_{i-1}=q_i r_i+r_{i+1},
+  \qquad r_{-1}=a,\quad r_0=b.\]</span> To obtain Bézout coefficients, track each remainder as a linear combination <span class="math inline">\(r_i=s_i a+t_i b\)</span>. For the initial remainders, define <span class="math display">\[(s_{-1},t_{-1})=(1,0),\qquad
+  (s_0,t_0)=(0,1),\]</span> so <span class="math display">\[s_{-1}a+t_{-1}b=a=r_{-1},
+  \qquad
+  s_0a+t_0b=b=r_0.\]</span> Suppose two consecutive remainders have already been expressed as <span class="math inline">\(r_{i-1}=s_{i-1}a+t_{i-1}b\)</span> and <span class="math inline">\(r_i=s_i a+t_i b\)</span>. The next Euclidean remainder is therefore <span class="math display">\[\begin{aligned}
+  r_{i+1}
+    &amp;=r_{i-1}-q_i r_i \\
+    &amp;=(s_{i-1}-q_i s_i)a+(t_{i-1}-q_i t_i)b.
+\end{aligned}\]</span> This calculation tells us to update the coefficients by <span class="math display">\[s_{i+1}=s_{i-1}-q_i s_i,
+  \qquad
+  t_{i+1}=t_{i-1}-q_i t_i.\]</span> Consequently every remainder remains an integer linear combination of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. By Problem 2, the last nonzero remainder <span class="math inline">\(r_N\)</span> equals <span class="math inline">\(d=(a,b)\)</span>, so <span class="math display">\[d=r_N=as_N+bt_N,\]</span> so the required integers are <span class="math inline">\(m=s_N\)</span> and <span class="math inline">\(n=t_N\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-5">
+<h2><a href="#ex-5">Exercise 5</a></h2>
+<div class="solution">
+<p>Use the indexing from Problem 4: <span class="math display">\[r_{i-1}=q_i r_i+r_{i+1},
+  \qquad
+  r_i=s_i a+t_i b.\]</span> Rows <span class="math inline">\(i=-1,0\)</span> are the initial data. In row <span class="math inline">\(i\)</span>, the quotient <span class="math inline">\(q_i\)</span> produces the next remainder <span class="math inline">\(r_{i+1}\)</span>; the quotient in the final row produces zero. The bold entries give <span class="math inline">\(d\)</span>, <span class="math inline">\(m\)</span>, and <span class="math inline">\(n\)</span>.</p>
+<div class="center">
+<p><strong><span class="math inline">\((a,b)=(187,221)\)</span></strong><br />
+</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Euclidean algorithm table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(q_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(t_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span class="math inline">\(187\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(221\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(187\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(34\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{17}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{6}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{-5}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong><span class="math inline">\((a,b)=(6188,4709)\)</span></strong><br />
+</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Euclidean algorithm table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(q_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(t_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span class="math inline">\(6188\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4709\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1479\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(272\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(119\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(16\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-21\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(34\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-35\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(46\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{17}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{121}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{-159}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong><span class="math inline">\((a,b)=(314,159)\)</span></strong><br />
+</p>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Euclidean algorithm table">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;"><span class="math inline">\(i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(q_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(r_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_i\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(t_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span class="math inline">\(314\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(159\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(155\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(38\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(39\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-77\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{1}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{-40}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\mathbf{79}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Thus <span class="math display">\[\begin{aligned}
+  17&amp;=6\cdot187-5\cdot221,\\
+  17&amp;=121\cdot6188-159\cdot4709,\\
+  1&amp;=-40\cdot314+79\cdot159.
+\end{aligned}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-6">
+<h2><a href="#ex-6">Exercise 6</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(d=(a,b)\)</span>. If <span class="math inline">\(ax+by=c\)</span> for some <span class="math inline">\(x,y\in\mathbb{Z}\)</span>, then <span class="math inline">\(d\)</span> divides both <span class="math inline">\(ax\)</span> and <span class="math inline">\(by\)</span>, hence <span class="math inline">\(d\mid c\)</span>.</p>
+<p>Conversely, suppose <span class="math inline">\(d\mid c\)</span>, say <span class="math inline">\(c=kd\)</span>. By Problem 4, there exist <span class="math inline">\(m,n\in\mathbb{Z}\)</span> such that <span class="math inline">\(d=am+bn\)</span>. Therefore <span class="math display">\[c=kd=a(km)+b(kn),\]</span> so <span class="math inline">\(x=km\)</span> and <span class="math inline">\(y=kn\)</span> give an integer solution.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-7">
+<h2><a href="#ex-7">Exercise 7</a></h2>
+<div class="solution">
+<p>By Problem 4, there exist <span class="math inline">\(m,n\in\mathbb{Z}\)</span> such that <span class="math display">\[d=am+bn=d(a&#39;m+b&#39;n).\]</span> Since <span class="math inline">\(d\neq0\)</span>, division by <span class="math inline">\(d\)</span> gives <span class="math inline">\(1=a&#39;m+b&#39;n\)</span>. Every common divisor of <span class="math inline">\(a&#39;\)</span> and <span class="math inline">\(b&#39;\)</span> therefore divides <span class="math inline">\(1\)</span>, so <span class="math inline">\((a&#39;,b&#39;)=1\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-8">
+<h2><a href="#ex-8">Exercise 8</a></h2>
+<div class="solution">
+<p>Put <span class="math inline">\(a=da&#39;\)</span> and <span class="math inline">\(b=db&#39;\)</span>, where <span class="math inline">\((a&#39;,b&#39;)=1\)</span>. For every <span class="math inline">\(t\in\mathbb{Z}\)</span>, <span class="math display">\[a\left(x_0+t\frac{b}{d}\right)
+  +b\left(y_0-t\frac{a}{d}\right)=ax_0+by_0=c,\]</span> so every displayed pair is a solution.</p>
+<p>Conversely, if <span class="math inline">\((x,y)\)</span> is any solution, subtracting the equation for <span class="math inline">\((x_0,y_0)\)</span> gives <span class="math display">\[a&#39;(x-x_0)=-b&#39;(y-y_0).\]</span> Thus <span class="math inline">\(b&#39;\mid a&#39;(x-x_0)\)</span>. Since <span class="math inline">\((a&#39;,b&#39;)=1\)</span>, Bézout’s identity implies <span class="math inline">\(b&#39;\mid x-x_0\)</span>; hence <span class="math inline">\(x-x_0=tb&#39;\)</span> for some <span class="math inline">\(t\in\mathbb{Z}\)</span>. Substitution then gives <span class="math inline">\(y-y_0=-ta&#39;\)</span>. Therefore <span class="math display">\[x=x_0+t\frac{b}{d},\qquad
+  y=y_0-t\frac{a}{d},\qquad t\in\mathbb{Z}.\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-9">
+<h2><a href="#ex-9">Exercise 9</a></h2>
+<div class="solution">
+<p>Write <span class="math inline">\(n=uk\)</span>. Since <span class="math inline">\(v\mid n=uk\)</span> and <span class="math inline">\((u,v)=1\)</span>, Bézout’s identity gives <span class="math inline">\(v\mid k\)</span>. Thus <span class="math inline">\(k=v\ell\)</span> for some <span class="math inline">\(\ell\in\mathbb{Z}\)</span>, and <span class="math display">\[n=uv\ell,\]</span> so <span class="math inline">\(uv\mid n\)</span>.</p>
+<p>The coprimality assumption is necessary: for <span class="math inline">\(u=v=n=2\)</span>, both <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> divide <span class="math inline">\(n\)</span>, but <span class="math inline">\(uv=4\nmid2\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-10">
+<h2><a href="#ex-10">Exercise 10</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(g=(u+v,u-v)\)</span>. Then <span class="math inline">\(g\mid2u\)</span> and <span class="math inline">\(g\mid2v\)</span>. Since <span class="math inline">\((u,v)=1\)</span>, there exist <span class="math inline">\(m,n\in\mathbb{Z}\)</span> such that <span class="math inline">\(um+vn=1\)</span>. Hence <span class="math display">\[g\mid 2um+2vn=2.\]</span> As <span class="math inline">\(g&gt;0\)</span>, it follows that <span class="math inline">\(g=1\)</span> or <span class="math inline">\(g=2\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-11">
+<h2><a href="#ex-11">Exercise 11</a></h2>
+<div class="solution">
+<p>If <span class="math inline">\(d=(a,a+k)\)</span>, then <span class="math inline">\(d\mid a\)</span> and <span class="math inline">\(d\mid a+k\)</span>. Therefore <span class="math display">\[d\mid(a+k)-a=k,\]</span> so <span class="math inline">\((a,a+k)\mid k\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-12">
+<h2><a href="#ex-12">Exercise 12</a></h2>
+<div class="solution">
+<p>Let the regular polygon have <span class="math inline">\(n\)</span> sides, and suppose <span class="math inline">\(k\)</span> copies meet at the vertex. Its interior angle is <span class="math display">\[\frac{(n-2)\pi}{n}.\]</span> Since the <span class="math inline">\(k\)</span> interior angles meet without gaps or overlaps, their sum is a full angle <span class="math inline">\(2\pi\)</span>. Hence <span class="math display">\[k\frac{(n-2)\pi}{n}=2\pi.\]</span> Canceling <span class="math inline">\(\pi\)</span> and multiplying by <span class="math inline">\(n\)</span> gives <span class="math display">\[\begin{aligned}
+  k(n-2)&amp;=2n,\\
+  kn-2k-2n&amp;=0.
+\end{aligned}\]</span> To factor the left-hand side, add <span class="math inline">\(4\)</span> to both sides: <span class="math display">\[\begin{aligned}
+  kn-2k-2n+4&amp;=4,\\
+  (k-2)(n-2)&amp;=4.
+\end{aligned}\]</span> Since <span class="math inline">\(k,n\geq3\)</span>, both factors are positive integers. The positive factorizations of <span class="math inline">\(4\)</span> give <span class="math display">\[(k-2,n-2)=(1,4),(2,2),(4,1),\]</span> and hence <span class="math display">\[(k,n)=(3,6),(4,4),(6,3).\]</span> Thus the three possibilities are three regular hexagons, four squares, and six equilateral triangles.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-13">
+<h2><a href="#ex-13">Exercise 13</a></h2>
+<div class="solution">
+<p>Define <span class="math inline">\((n_1,\ldots,n_s)\)</span> to be the unique nonnegative integer <span class="math inline">\(d\)</span> such that <span class="math display">\[d\mid n_i\quad(1\leq i\leq s),\]</span> and every common divisor of <span class="math inline">\(n_1,\ldots,n_s\)</span> divides <span class="math inline">\(d\)</span>. This definition also gives <span class="math inline">\(d=0\)</span> when all the <span class="math inline">\(n_i\)</span> are zero, in which case the desired identity is immediate. Otherwise, after relabeling, assume <span class="math inline">\(n_1\neq0\)</span>.</p>
+<p>Set <span class="math display">\[d_1=|n_1|,
+  \qquad
+  d_j=(d_{j-1},n_j)\quad(2\leq j\leq s).\]</span> Inductively, <span class="math inline">\(d_j\)</span> is the greatest common divisor of <span class="math inline">\(n_1,\ldots,n_j\)</span>: it divides all these integers, while every common divisor of them divides both <span class="math inline">\(d_{j-1}\)</span> and <span class="math inline">\(n_j\)</span>, and hence divides <span class="math inline">\(d_j\)</span>. In particular, <span class="math inline">\(d_s=d\)</span>.</p>
+<p>It remains to track a linear combination. We have <span class="math inline">\(d_1=\varepsilon n_1\)</span>, where <span class="math inline">\(\varepsilon\in\{1,-1\}\)</span>. Suppose <span class="math display">\[d_{j-1}=n_1c_1+\cdots+n_{j-1}c_{j-1}.\]</span> By the two-integer Bézout identity, there exist <span class="math inline">\(u_j,v_j\in\mathbb{Z}\)</span> such that <span class="math display">\[d_j=u_jd_{j-1}+v_jn_j.\]</span> Substituting the preceding expression gives <span class="math display">\[d_j=n_1(u_jc_1)+\cdots+n_{j-1}(u_jc_{j-1})+n_jv_j.\]</span> Thus each <span class="math inline">\(d_j\)</span> is an integer linear combination of <span class="math inline">\(n_1,\ldots,n_j\)</span>. Taking <span class="math inline">\(j=s\)</span> yields <span class="math display">\[d=n_1m_1+\cdots+n_sm_s\]</span> for suitable integers <span class="math inline">\(m_1,\ldots,m_s\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-14">
+<h2><a href="#ex-14">Exercise 14</a></h2>
+<div class="solution">
+<p>Let <span class="math display">\[d=(a_1,\ldots,a_s).\]</span> If integers <span class="math inline">\(x_1,\ldots,x_s\)</span> satisfy <span class="math inline">\(a_1x_1+\cdots+a_sx_s=c\)</span>, then <span class="math inline">\(d\)</span> divides every term on the left, and hence <span class="math inline">\(d\mid c\)</span>.</p>
+<p>Conversely, suppose <span class="math inline">\(d\mid c\)</span>, say <span class="math inline">\(c=kd\)</span>. By Problem 13, there exist <span class="math inline">\(m_1,\ldots,m_s\in\mathbb{Z}\)</span> such that <span class="math display">\[d=a_1m_1+\cdots+a_sm_s.\]</span> Multiplying by <span class="math inline">\(k\)</span> gives <span class="math display">\[c=a_1(km_1)+\cdots+a_s(km_s),\]</span> so <span class="math inline">\(x_i=km_i\)</span> gives an integer solution. Therefore the equation is solvable in integers if and only if <span class="math inline">\(d\mid c\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-15">
+<h2><a href="#ex-15">Exercise 15</a></h2>
+<div class="solution">
+<p>For <span class="math inline">\(a&gt;0\)</span>, write its prime factorization as <span class="math display">\[a=\prod_p p^{e_p},
+  \qquad e_p=\mathop{\mathrm{ord}}_p(a),\]</span> where only finitely many <span class="math inline">\(e_p\)</span> are nonzero. If <span class="math inline">\(a=b^2\)</span> and <span class="math inline">\(|b|=\prod_p p^{f_p}\)</span>, then <span class="math inline">\(e_p=2f_p\)</span> for every prime <span class="math inline">\(p\)</span>, so every <span class="math inline">\(e_p\)</span> is even.</p>
+<p>Conversely, if every <span class="math inline">\(e_p\)</span> is even, then <span class="math display">\[a=\left(\prod_p p^{e_p/2}\right)^2,\]</span> so <span class="math inline">\(a\)</span> is a square.</p>
+<p>More generally, for any integer <span class="math inline">\(r\geq2\)</span>, a positive integer <span class="math inline">\(a\)</span> is an <span class="math inline">\(r\)</span>th power if and only if <span class="math display">\[r\mid\mathop{\mathrm{ord}}_p(a)\]</span> for every prime <span class="math inline">\(p\)</span>. For arbitrary nonzero integers, one must additionally require <span class="math inline">\(a&gt;0\)</span> when <span class="math inline">\(r\)</span> is even; when <span class="math inline">\(r\)</span> is odd, there is no sign restriction.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-16">
+<h2><a href="#ex-16">Exercise 16</a></h2>
+<div class="solution">
+<p>For every prime <span class="math inline">\(p\)</span>, <span class="math display">\[\mathop{\mathrm{ord}}_p(u)+\mathop{\mathrm{ord}}_p(v)=\mathop{\mathrm{ord}}_p(uv)=2\mathop{\mathrm{ord}}_p(a),\]</span> which is even. Since <span class="math inline">\((u,v)=1\)</span>, at most one of <span class="math inline">\(\mathop{\mathrm{ord}}_p(u)\)</span> and <span class="math inline">\(\mathop{\mathrm{ord}}_p(v)\)</span> is nonzero. Hence each nonzero exponent occurring in either <span class="math inline">\(u\)</span> or <span class="math inline">\(v\)</span> is even. By Problem 15, both <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> are squares.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-17">
+<h2><a href="#ex-17">Exercise 17</a></h2>
+<div class="solution">
+<p>Suppose <span class="math inline">\(\sqrt{2}=a/b\)</span>, where <span class="math inline">\(a,b\in\mathbb{Z}\)</span> and <span class="math inline">\(b\neq0\)</span>. Then <span class="math display">\[a^2=2b^2.\]</span> Taking the exponent of <span class="math inline">\(2\)</span> on both sides gives <span class="math display">\[2\mathop{\mathrm{ord}}_2(a)=1+2\mathop{\mathrm{ord}}_2(b).\]</span> The left-hand side is even and the right-hand side is odd, a contradiction. Thus <span class="math inline">\(\sqrt{2}\)</span> is irrational.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-18">
+<h2><a href="#ex-18">Exercise 18</a></h2>
+<div class="solution">
+<p>Suppose <span class="math inline">\(\sqrt[n]{m}=a/b\in\mathbb{Q}\)</span>, written in lowest terms with <span class="math inline">\(b&gt;0\)</span>. Then <span class="math display">\[a^n=mb^n,\]</span> so <span class="math inline">\(b^n\mid a^n\)</span>. But <span class="math inline">\((a,b)=1\)</span> implies <span class="math inline">\((a^n,b^n)=1\)</span>; hence <span class="math inline">\(b^n=1\)</span> and <span class="math inline">\(b=1\)</span>. Therefore <span class="math display">\[m=a^n,\]</span> contrary to the assumption. Thus <span class="math inline">\(\sqrt[n]{m}\)</span> is irrational.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-19">
+<h2><a href="#ex-19">Exercise 19</a></h2>
+<div class="solution">
+<p>If <span class="math inline">\(ab=0\)</span>, then <span class="math inline">\(m=0\)</span> has the required property. Assume <span class="math inline">\(ab\neq0\)</span>, let <span class="math inline">\(d=(a,b)\)</span>, and write <span class="math display">\[a=du,\qquad b=dv,\qquad (u,v)=1.\]</span> Set <span class="math display">\[m=duv=\frac{ab}{d}.\]</span> Since <span class="math inline">\(m=av=bu\)</span>, it is a common multiple of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. If <span class="math inline">\(N\)</span> is any common multiple, write <span class="math inline">\(N=ax=by\)</span>. Then <span class="math inline">\(ux=vy\)</span>. As <span class="math inline">\((u,v)=1\)</span>, we have <span class="math inline">\(v\mid x\)</span>, say <span class="math inline">\(x=vt\)</span>. Therefore <span class="math display">\[N=ax=duvt=mt,\]</span> so <span class="math inline">\(m\mid N\)</span>.</p>
+<p>If <span class="math inline">\(m&#39;\)</span> has the same defining property, then <span class="math inline">\(m\mid m&#39;\)</span> and <span class="math inline">\(m&#39;\mid m\)</span>. Hence <span class="math inline">\(m&#39;=\pm m\)</span>, proving uniqueness up to sign.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-20">
+<h2><a href="#ex-20">Exercise 20</a></h2>
+<div class="solution">
+<ol type="a">
+<li><p>By unique factorization, the positive integer <span class="math display">\[L=\prod_q q^{\max(\mathop{\mathrm{ord}}_q(a),\mathop{\mathrm{ord}}_q(b))}\]</span> is a common multiple of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, and it divides every common multiple. Thus <span class="math inline">\(L=|[a,b]|\)</span>. In particular, putting <span class="math inline">\(\alpha=\mathop{\mathrm{ord}}_p(a)\)</span> and <span class="math inline">\(\beta=\mathop{\mathrm{ord}}_p(b)\)</span> gives <span class="math display">\[\mathop{\mathrm{ord}}_p[a,b]=\max(\alpha,\beta).\]</span></p></li>
+<li><p>Since <span class="math inline">\(\mathop{\mathrm{ord}}_p(a,b)=\min(\alpha,\beta)\)</span>, part (a) gives <span class="math display">\[\mathop{\mathrm{ord}}_p\bigl((a,b)[a,b]\bigr)
+  =\min(\alpha,\beta)+\max(\alpha,\beta)
+  =\alpha+\beta
+  =\mathop{\mathrm{ord}}_p(ab).\]</span> Thus the two sides agree up to sign; with the choice <span class="math inline">\([a,b]=ab/(a,b)\)</span> from Problem 19, their signs also agree. Therefore <span class="math display">\[(a,b)[a,b]=ab.\]</span></p></li>
+<li><p>Write <span class="math inline">\(a=du\)</span> and <span class="math inline">\(b=dv\)</span>, where <span class="math inline">\(d=(a,b)\)</span> and <span class="math inline">\((u,v)=1\)</span>. By Problem 19, <span class="math inline">\([a,b]=duv\)</span>, so <span class="math display">\[(a+b,[a,b])=d\,(u+v,uv).\]</span> Suppose a prime <span class="math inline">\(p\)</span> divides both <span class="math inline">\(u+v\)</span> and <span class="math inline">\(uv\)</span>. Since <span class="math inline">\(p\mid uv\)</span>, Euclid’s lemma gives <span class="math inline">\(p\mid u\)</span> or <span class="math inline">\(p\mid v\)</span>. If <span class="math inline">\(p\mid u\)</span>, then <span class="math display">\[p\mid(u+v)-u=v;\]</span> if <span class="math inline">\(p\mid v\)</span>, then similarly <span class="math inline">\(p\mid(u+v)-v=u\)</span>. In either case <span class="math inline">\(p\)</span> divides both <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span>, contradicting <span class="math inline">\((u,v)=1\)</span>. Thus <span class="math inline">\((u+v,uv)=1\)</span>, and <span class="math display">\[(a+b,[a,b])=d=(a,b).\]</span></p></li>
+</ol>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-21">
+<h2><a href="#ex-21">Exercise 21</a></h2>
+<div class="solution">
+<p>Let <span class="math display">\[\alpha=\mathop{\mathrm{ord}}_p(a),\qquad \beta=\mathop{\mathrm{ord}}_p(b),\]</span> and suppose first that <span class="math inline">\(\alpha\leq\beta\)</span>. Write <span class="math display">\[a=p^\alpha u,\qquad b=p^\beta v,
+  \qquad p\nmid u,\quad p\nmid v.\]</span> Factoring out the smaller power of <span class="math inline">\(p\)</span> gives <span class="math display">\[a+b=p^\alpha\bigl(u+p^{\beta-\alpha}v\bigr),\]</span> so <span class="math display">\[\mathop{\mathrm{ord}}_p(a+b)\geq\alpha
+  =\min\bigl(\mathop{\mathrm{ord}}_p(a),\mathop{\mathrm{ord}}_p(b)\bigr).\]</span> If <span class="math inline">\(\alpha&lt;\beta\)</span>, then <span class="math inline">\(p\mid p^{\beta-\alpha}v\)</span> but <span class="math inline">\(p\nmid u\)</span>; hence <span class="math display">\[p\nmid u+p^{\beta-\alpha}v.\]</span> Therefore <span class="math inline">\(\mathop{\mathrm{ord}}_p(a+b)=\alpha\)</span>. The case <span class="math inline">\(\beta&lt;\alpha\)</span> is symmetric, so equality holds whenever <span class="math inline">\(\mathop{\mathrm{ord}}_p(a)\neq\mathop{\mathrm{ord}}_p(b)\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-22">
+<h2><a href="#ex-22">Exercise 22</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(R\)</span> be a Euclidean domain with Euclidean function <span class="math inline">\(\delta\)</span>. For <span class="math inline">\(a,b\in R\)</span> with <span class="math inline">\(b\neq0\)</span>, division gives <span class="math display">\[a=qb+r,
+  \qquad
+  r=0\ \text{or}\ \delta(r)&lt;\delta(b).\]</span> Moreover, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> have exactly the same common divisors as <span class="math inline">\(b\)</span> and <span class="math inline">\(r\)</span>. Repeating the division produces a strictly decreasing sequence of Euclidean values, so the process terminates. Its last nonzero remainder <span class="math inline">\(d\)</span> is therefore a greatest common divisor of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, determined up to multiplication by a unit.</p>
+<p>The remainder equations may be substituted backwards exactly as over <span class="math inline">\(\mathbb{Z}\)</span>, giving <span class="math display">\[d=ax+by\]</span> for some <span class="math inline">\(x,y\in R\)</span>. These are the only ingredients used in the earlier divisibility arguments. Consequently, with equality understood up to a unit, the same proofs give, for example, <span class="math display">\[ax+by=c\ \text{is solvable}
+  \quad\Longleftrightarrow\quad
+  d\mid c,\]</span> as well as coprime cancellation, the coprime-product property, and the gcd–lcm identities.</p>
+<p>Every Euclidean domain is a principal ideal domain and hence a unique factorization domain. Thus the arguments using prime exponents also remain valid. The only extra qualification is the unit factor: an element is an <span class="math inline">\(n\)</span>th power precisely when every irreducible exponent is divisible by <span class="math inline">\(n\)</span> and its unit factor is itself an <span class="math inline">\(n\)</span>th power.</p>
+<p>For <span class="math inline">\(k[X]\)</span>, take <span class="math inline">\(\delta(f)=\deg f\)</span> for <span class="math inline">\(f\neq0\)</span>. Its units are the nonzero constants in <span class="math inline">\(k\)</span>; choosing gcds and lcms to be monic removes the unit ambiguity. Hence all of the preceding algebraic arguments apply to polynomials. Statements specifically involving order, sign, geometry, or irrational real roots have no literal analogue in an arbitrary Euclidean domain.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-23">
+<h2><a href="#ex-23">Exercise 23</a></h2>
+<div class="solution">
+<p>Changing signs and interchanging <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> if necessary, we may assume <span class="math inline">\(c&gt;0\)</span>, <span class="math inline">\(a\)</span> is even, and <span class="math inline">\(b\)</span> is odd. Indeed, <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> cannot both be odd, since squares of odd integers are <span class="math inline">\(1\)</span> modulo <span class="math inline">\(4\)</span>; nor can they both be even, since <span class="math inline">\((a,b)=1\)</span>. Hence exactly one is even, and then <span class="math inline">\(c\)</span> is odd.</p>
+<p>Set <span class="math display">\[x=\frac{c-b}{2},\qquad y=\frac{c+b}{2}.\]</span> Since <span class="math inline">\(c^2=a^2+b^2\)</span> and <span class="math inline">\(c&gt;0\)</span>, we have <span class="math inline">\(c\geq |b|\)</span>, so both <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are nonnegative. Their product is <span class="math display">\[xy=\frac{c^2-b^2}{4}=\frac{a^2}{4}
+     =\left(\frac a2\right)^2.\]</span> Moreover, if <span class="math inline">\(d\mid x\)</span> and <span class="math inline">\(d\mid y\)</span>, then <span class="math display">\[d\mid x+y=c,\qquad d\mid y-x=b.\]</span> Since <span class="math inline">\((b,c)=1\)</span>, this forces <span class="math inline">\(|d|=1\)</span>; hence <span class="math inline">\((x,y)=1\)</span>. Thus <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> are coprime nonnegative integers whose product is a square. By Exercise 16, each is a square, so for some integers <span class="math inline">\(u,v\)</span>, <span class="math display">\[\frac{c-b}{2}=u^2,\qquad \frac{c+b}{2}=v^2.\]</span> Equivalently, <span class="math display">\[c-b=2u^2,\qquad c+b=2v^2.\]</span> Also <span class="math inline">\((u,v)=1\)</span>, since any common divisor of <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> would have its square divide both <span class="math inline">\(u^2=x\)</span> and <span class="math inline">\(v^2=y\)</span>.</p>
+<p>Adding and subtracting the two equations gives <span class="math display">\[c=u^2+v^2,\qquad b=v^2-u^2.\]</span> Finally, <span class="math display">\[a^2=c^2-b^2=(c-b)(c+b)=4u^2v^2.\]</span> Choosing the sign of <span class="math inline">\(u\)</span> if necessary, we obtain <span class="math inline">\(a=2uv\)</span>.</p>
+<p>Conversely, for any integers <span class="math inline">\(u,v\)</span>, let <span class="math display">\[a=2uv,\qquad b=v^2-u^2,\qquad c=v^2+u^2.\]</span> Then <span class="math display">\[\begin{aligned}
+  a^2+b^2
+    &amp;=4u^2v^2+(v^2-u^2)^2 \\
+    &amp;=u^4+2u^2v^2+v^4 \\
+    &amp;=(u^2+v^2)^2=c^2.
+\end{aligned}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-24">
+<h2><a href="#ex-24">Exercise 24</a></h2>
+<div class="solution">
+<ol type="a">
+<li><p>Multiplication makes all intermediate terms cancel: <span class="math display">\[(x-y)\sum_{j=0}^{n-1}x^{\,n-1-j}y^j
+  =x^n-y^n.\]</span></p></li>
+<li><p>Similarly, <span class="math display">\[(x+y)\sum_{j=0}^{n-1}(-1)^j x^{\,n-1-j}y^j
+  =x^n+(-1)^{n-1}y^n.\]</span> When <span class="math inline">\(n\)</span> is odd, <span class="math inline">\(n-1\)</span> is even, so the right-hand side is <span class="math inline">\(x^n+y^n\)</span>.</p></li>
+</ol>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-25">
+<h2><a href="#ex-25">Exercise 25</a></h2>
+<div class="solution">
+<p>For <span class="math inline">\(a&gt;1\)</span> and <span class="math inline">\(n&gt;1\)</span>, Exercise 24(a) gives <span class="math display">\[a^n-1=(a-1)(a^{n-1}+a^{n-2}+\cdots+1).\]</span> The second factor is greater than <span class="math inline">\(1\)</span>, so primality forces <span class="math inline">\(a-1=1\)</span>; hence <span class="math inline">\(a=2\)</span>.</p>
+<p>If <span class="math inline">\(n=rs\)</span> with <span class="math inline">\(r,s&gt;1\)</span>, then <span class="math display">\[2^n-1=(2^r)^s-1\]</span> is divisible by <span class="math inline">\(2^r-1\)</span>, where <span class="math display">\[1&lt;2^r-1&lt;2^n-1.\]</span> This contradicts primality. Therefore <span class="math inline">\(n\)</span> is prime.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-26">
+<h2><a href="#ex-26">Exercise 26</a></h2>
+<div class="solution">
+<p>If <span class="math inline">\(a\)</span> were odd, then <span class="math inline">\(a\equiv1\pmod 2\)</span>, and therefore <span class="math display">\[a^n+1\equiv1^n+1\equiv0\pmod 2.\]</span> Thus <span class="math inline">\(a^n+1\)</span> would be even. Since <span class="math inline">\(a^n+1&gt;2\)</span>, it would be composite, a contradiction. Hence <span class="math inline">\(a\)</span> is even.</p>
+<p>Write <span class="math display">\[n=2^t m,\]</span> where <span class="math inline">\(m\)</span> is odd. If <span class="math inline">\(m&gt;1\)</span>, set <span class="math inline">\(x=a^{2^t}\)</span>. By Exercise 24(b), <span class="math display">\[a^n+1=x^m+1\]</span> is divisible by <span class="math inline">\(x+1\)</span>, and <span class="math display">\[1&lt;x+1&lt;x^m+1.\]</span> This again contradicts primality. Hence <span class="math inline">\(m=1\)</span>, so <span class="math inline">\(n=2^t\)</span> is a power of <span class="math inline">\(2\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-27">
+<h2><a href="#ex-27">Exercise 27</a></h2>
+<div class="remark">
+<p>The second assertion retains the hypothesis that <span class="math inline">\(n\)</span> is odd. Without it the statement is false: for <span class="math inline">\(n=2\)</span>, one has <span class="math inline">\(3\nmid n\)</span> but <span class="math inline">\(6\nmid n^2-1\)</span>.</p>
+</div>
+<div class="solution">
+<p>Let <span class="math inline">\(n=2k+1\)</span>. Then <span class="math display">\[n^2-1=4k(k+1).\]</span> One of the consecutive integers <span class="math inline">\(k\)</span> and <span class="math inline">\(k+1\)</span> is even, so <span class="math inline">\(8\mid n^2-1\)</span>.</p>
+<p>For the same odd <span class="math inline">\(n\)</span>, suppose also that <span class="math inline">\(3\nmid n\)</span>. Then <span class="math inline">\(n\equiv\pm1\pmod 3\)</span>, so <span class="math inline">\(3\mid n^2-1\)</span>. Since <span class="math inline">\(2\mid n^2-1\)</span> and <span class="math inline">\((2,3)=1\)</span>, it follows that <span class="math inline">\(6\mid n^2-1\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-28">
+<h2><a href="#ex-28">Exercise 28</a></h2>
+<div class="solution">
+<ol type="a">
+<li><p>Factor <span class="math display">\[n^5-n=n(n^2-1)(n^2+1).\]</span> Since <span class="math inline">\(n(n^2-1)=(n-1)n(n+1)\)</span> is a product of three consecutive integers, it is divisible by both <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span>. It remains to find a factor of <span class="math inline">\(5\)</span>. For every integer <span class="math inline">\(n\)</span>, <span class="math display">\[n^2\equiv0,\ 1,\ \text{or }-1\pmod 5.\]</span> The three possibilities correspond exactly to <span class="math display">\[\begin{array}{c||c|c|c}
+    n^2\bmod 5 &amp; 0 &amp; 1 &amp; -1 \\ \hline
+    5\text{ divides} &amp; n &amp; n^2-1 &amp; n^2+1
+  \end{array}\]</span> Thus <span class="math inline">\(5\mid n^5-n\)</span>. Since <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span>, and <span class="math inline">\(5\)</span> are pairwise coprime, <span class="math display">\[30\mid n^5-n.\]</span></p></li>
+<li><p>Factor <span class="math display">\[n^7-n=n(n^2-1)(n^4+n^2+1).\]</span> The factor <span class="math inline">\((n-1)n(n+1)\)</span> again supplies <span class="math inline">\(2\)</span> and <span class="math inline">\(3\)</span>, so it remains to find a factor of <span class="math inline">\(7\)</span>. The square residues modulo <span class="math inline">\(7\)</span> are obtained from <span class="math display">\[\begin{array}{c||c|c|c|c}
+    n\bmod 7   &amp; 0 &amp; \pm1 &amp; \pm2 &amp; \pm3 \\ \hline
+    n^2\bmod 7 &amp; 0 &amp; 1    &amp; 4    &amp; 2
+  \end{array}\]</span> Put <span class="math inline">\(z\equiv n^2\pmod 7\)</span>. Thus <span class="math inline">\(z\in\{0,1,2,4\}\)</span>, and <span class="math display">\[\begin{array}{c||c|c|c|c}
+    z &amp; 0 &amp; 1 &amp; 2 &amp; 4 \\ \hline
+    7\text{ divides}
+      &amp; n &amp; n^2-1 &amp; n^4+n^2+1 &amp; n^4+n^2+1
+  \end{array}\]</span> Indeed, in the last two columns, <span class="math display">\[2^2+2+1=7,\qquad 4^2+4+1=21.\]</span> Hence <span class="math inline">\(7\mid n^7-n\)</span>. Since <span class="math inline">\(2\)</span>, <span class="math inline">\(3\)</span>, and <span class="math inline">\(7\)</span> are pairwise coprime, <span class="math display">\[42\mid n^7-n.\]</span></p></li>
+</ol>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-29">
+<h2><a href="#ex-29">Exercise 29</a></h2>
+<div class="solution">
+<p>Let <span class="math display">\[\frac ab+\frac cd=m\]</span> for some <span class="math inline">\(m\in\mathbb{Z}\)</span>. Clearing denominators gives <span class="math display">\[ad+bc=mbd.\]</span> Reducing this equation modulo <span class="math inline">\(b\)</span> yields <span class="math display">\[ad\equiv0\pmod b,\]</span> so <span class="math inline">\(b\mid ad\)</span>. Since <span class="math inline">\((a,b)=1\)</span>, coprime cancellation gives <span class="math inline">\(b\mid d\)</span>.</p>
+<p>Similarly, reducing the same equation modulo <span class="math inline">\(d\)</span> gives <span class="math display">\[bc\equiv0\pmod d.\]</span> Thus <span class="math inline">\(d\mid bc\)</span>, and <span class="math inline">\((c,d)=1\)</span> gives <span class="math inline">\(d\mid b\)</span>. Hence <span class="math inline">\(b\mid d\)</span> and <span class="math inline">\(d\mid b\)</span>. Since the denominators are nonzero, this implies <span class="math display">\[|b|=|d|,\]</span> and therefore <span class="math inline">\(b=\pm d\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-30">
+<h2><a href="#ex-30">Exercise 30</a></h2>
+<div class="solution">
+<p>Choose <span class="math inline">\(k\)</span> so that <span class="math display">\[2^k\leq n&lt;2^{k+1},\]</span> and let <span class="math inline">\(L=\operatorname{lcm}(1,2,\ldots,n)\)</span>. The largest power of <span class="math inline">\(2\)</span> dividing <span class="math inline">\(L\)</span> is <span class="math inline">\(2^k\)</span>. Moreover, among <span class="math inline">\(1,\ldots,n\)</span>, the only integer divisible by <span class="math inline">\(2^k\)</span> is <span class="math inline">\(2^k\)</span> itself, since the next multiple <span class="math inline">\(2^{k+1}\)</span> is greater than <span class="math inline">\(n\)</span>.</p>
+<p>Writing the sum over the common denominator <span class="math inline">\(L\)</span> gives <span class="math display">\[\frac12+\frac13+\cdots+\frac1n
+  =\frac{A}{L},
+  \qquad
+  A=\sum_{j=2}^n\frac Lj.\]</span> For <span class="math inline">\(j=2^k\)</span>, the integer <span class="math inline">\(L/j\)</span> is odd. For every other <span class="math inline">\(j\)</span>, the power of <span class="math inline">\(2\)</span> dividing <span class="math inline">\(j\)</span> is at most <span class="math inline">\(2^{k-1}\)</span>, so <span class="math inline">\(L/j\)</span> is even. Thus <span class="math inline">\(A\)</span> is the sum of one odd integer and several even integers, and is therefore odd.</p>
+<p>Since <span class="math inline">\(L\)</span> is even while <span class="math inline">\(A\)</span> is odd, the factor <span class="math inline">\(2\)</span> cannot cancel from the denominator. Hence the sum is not an integer.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-31">
+<h2><a href="#ex-31">Exercise 31</a></h2>
+<div class="solution">
+<p>Since <span class="math display">\[(1+i)^2=2i,\]</span> we have <span class="math display">\[2=(-i)(1+i)^2.\]</span> Thus <span class="math inline">\((1+i)^2\mid2\)</span> in <span class="math inline">\(\mathbb{Z}[i]\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-32">
+<h2><a href="#ex-32">Exercise 32</a></h2>
+<div class="solution">
+<p>We have <span class="math display">\[(a+bi)(c+di)=(ac-bd)+(ad+bc)i.\]</span> For any <span class="math inline">\(\alpha,\beta\in\mathbb{Z}[i]\)</span>, conjugation satisfies <span class="math inline">\(\overline{\alpha\beta}=\overline{\alpha}\,\overline{\beta}\)</span>. Therefore <span class="math display">\[\begin{aligned}
+  \lambda(\alpha\beta)
+    &amp;=(\alpha\beta)\overline{\alpha\beta} \\
+    &amp;=(\alpha\beta)
+      \bigl(\overline{\alpha}\,\overline{\beta}\bigr) \\
+    &amp;=(\alpha\overline{\alpha})
+      (\beta\overline{\beta}) \\
+    &amp;=\lambda(\alpha)\lambda(\beta).
+\end{aligned}\]</span> Thus <span class="math inline">\(\lambda\)</span> is multiplicative. Applying this to <span class="math inline">\(a+bi\)</span> and <span class="math inline">\(c+di\)</span> gives <span class="math display">\[\begin{aligned}
+  (a^2+b^2)(c^2+d^2)
+    &amp;=\lambda(a+bi)\lambda(c+di) \\
+    &amp;=\lambda\bigl((a+bi)(c+di)\bigr) \\
+    &amp;=(ac-bd)^2+(ad+bc)^2.
+\end{aligned}\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-33">
+<h2><a href="#ex-33">Exercise 33</a></h2>
+<div class="solution">
+<p>If <span class="math inline">\(\alpha\)</span> is a unit, there is some <span class="math inline">\(\beta\in\mathbb{Z}[i]\)</span> such that <span class="math inline">\(\alpha\beta=1\)</span>. Hence <span class="math display">\[\lambda(\alpha)\lambda(\beta)
+  =\lambda(\alpha\beta)=\lambda(1)=1.\]</span> Both factors are nonnegative integers, so <span class="math inline">\(\lambda(\alpha)=1\)</span>.</p>
+<p>Conversely, if <span class="math inline">\(\lambda(\alpha)=1\)</span>, then <span class="math display">\[\alpha\overline{\alpha}=\lambda(\alpha)=1,\]</span> so <span class="math inline">\(\overline{\alpha}\in\mathbb{Z}[i]\)</span> is the inverse of <span class="math inline">\(\alpha\)</span>. Thus <span class="math inline">\(\alpha\)</span> is a unit.</p>
+<p>Finally, if <span class="math inline">\(\alpha=a+bi\)</span>, then <span class="math inline">\(\lambda(\alpha)=1\)</span> means <span class="math display">\[a^2+b^2=1.\]</span> The only integer solutions are <span class="math inline">\((a,b)=(\pm1,0)\)</span> and <span class="math inline">\((0,\pm1)\)</span>. Therefore the only units in <span class="math inline">\(\mathbb{Z}[i]\)</span> are <span class="math display">\[1,\quad -1,\quad i,\quad -i.\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-34">
+<h2><a href="#ex-34">Exercise 34</a></h2>
+<div class="solution">
+<p>Using <span class="math inline">\(\omega^2+\omega+1=0\)</span> and <span class="math inline">\(\omega^3=1\)</span>, we obtain <span class="math display">\[(1-\omega)^2
+  =1-2\omega+\omega^2
+  =-3\omega.\]</span> Consequently, <span class="math display">\[3=(-\omega^2)(1-\omega)^2,\]</span> so <span class="math inline">\((1-\omega)^2\mid3\)</span> in <span class="math inline">\(\mathbb{Z}[\omega]\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-35">
+<h2><a href="#ex-35">Exercise 35</a></h2>
+<div class="solution">
+<p>Since <span class="math inline">\(\overline{\omega}=\omega^2=-1-\omega\)</span>, the conjugate of <span class="math inline">\(\alpha=a+b\omega\)</span> again lies in <span class="math inline">\(\mathbb{Z}[\omega]\)</span>, and <span class="math display">\[\alpha\overline{\alpha}
+  =(a+b\omega)(a+b\omega^2)
+  =a^2-ab+b^2
+  =\lambda(\alpha).\]</span> As in Exercise 32, conjugation respects products, so <span class="math inline">\(\lambda\)</span> is multiplicative.</p>
+<p>If <span class="math inline">\(\alpha\)</span> is a unit with inverse <span class="math inline">\(\beta\)</span>, then <span class="math display">\[\lambda(\alpha)\lambda(\beta)
+  =\lambda(\alpha\beta)=\lambda(1)=1.\]</span> Since both factors are nonnegative integers, <span class="math inline">\(\lambda(\alpha)=1\)</span>. Conversely, if <span class="math inline">\(\lambda(\alpha)=1\)</span>, then <span class="math display">\[\alpha\overline{\alpha}=1,\]</span> so <span class="math inline">\(\overline{\alpha}\in\mathbb{Z}[\omega]\)</span> is the inverse of <span class="math inline">\(\alpha\)</span>.</p>
+<p>It remains to solve <span class="math display">\[a^2-ab+b^2=1.\]</span> Multiplying by <span class="math inline">\(4\)</span> and completing the square gives <span class="math display">\[(2a-b)^2+3b^2=4.\]</span> Hence <span class="math inline">\(|b|\leq1\)</span>. If <span class="math inline">\(b=0\)</span>, then <span class="math inline">\(a=\pm1\)</span>. If <span class="math inline">\(b=1\)</span>, then <span class="math inline">\(a(a-1)=0\)</span>, so <span class="math inline">\(a=0\)</span> or <span class="math inline">\(1\)</span>; if <span class="math inline">\(b=-1\)</span>, then <span class="math inline">\(a(a+1)=0\)</span>, so <span class="math inline">\(a=0\)</span> or <span class="math inline">\(-1\)</span>. These possibilities give precisely <span class="math display">\[1,\quad -1,\quad \omega,\quad -\omega,\quad
+  \omega^2,\quad -\omega^2.\]</span></p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-36">
+<h2><a href="#ex-36">Exercise 36</a></h2>
+<div class="solution">
+<p>Write <span class="math inline">\(\tau=\sqrt{-2}\)</span>. Since <span class="math inline">\(\tau^2=-2\)</span>, we have <span class="math display">\[\begin{aligned}
+  (a+b\tau)+(c+d\tau)&amp;=(a+c)+(b+d)\tau,\\
+  -(a+b\tau)&amp;=-a-b\tau,\\
+  (a+b\tau)(c+d\tau)&amp;=(ac-2bd)+(ad+bc)\tau.
+\end{aligned}\]</span> Thus <span class="math inline">\(\mathbb{Z}[\tau]\)</span> contains <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> and is closed under addition, additive inverses, and multiplication, so it is a ring. It is an integral domain because it is a subring of <span class="math inline">\(\mathbb{C}\)</span>.</p>
+<p>Complex conjugation sends <span class="math inline">\(a+b\tau\)</span> to <span class="math inline">\(a-b\tau\)</span>, and hence <span class="math display">\[\lambda(a+b\tau)
+  =(a+b\tau)(a-b\tau)=a^2+2b^2.\]</span> Therefore <span class="math inline">\(\lambda(\alpha\beta)=\lambda(\alpha)\lambda(\beta)\)</span>, and <span class="math inline">\(\lambda(\alpha)\)</span> is a nonnegative integer which vanishes only when <span class="math inline">\(\alpha=0\)</span>. Thus <span class="math inline">\(\lambda\)</span> has the correct positive-integer values for a Euclidean function; it remains to verify the Euclidean division condition.</p>
+<p>Now let <span class="math inline">\(\alpha,\beta\in\mathbb{Z}[\tau]\)</span> with <span class="math inline">\(\beta\neq0\)</span>. Write <span class="math inline">\(\beta=c+d\tau\)</span> and, in the field <span class="math inline">\(\mathbb{Q}(\tau)\)</span>, write <span class="math display">\[\frac{\alpha}{\beta}=x+y\tau,
+  \qquad x,y\in\mathbb{Q}.\]</span> Choose <span class="math inline">\(m,n\in\mathbb{Z}\)</span> nearest to <span class="math inline">\(x,y\)</span>, respectively, so that <span class="math display">\[|x-m|\leq\frac12,
+  \qquad |y-n|\leq\frac12.\]</span> Set <span class="math display">\[u=x-m,\qquad v=y-n,
+  \qquad q=m+n\tau,
+  \qquad r=\alpha-q\beta.\]</span> Then <span class="math inline">\(q,r\in\mathbb{Z}[\tau]\)</span> and <span class="math inline">\(\alpha=q\beta+r\)</span>. Direct multiplication gives <span class="math display">\[\begin{aligned}
+  r
+    &amp;=\beta\left(\frac{\alpha}{\beta}-q\right)\\
+    &amp;=(c+d\tau)(u+v\tau)\\
+    &amp;=(cu-2dv)+(cv+du)\tau.
+\end{aligned}\]</span> Although <span class="math inline">\(u,v\)</span> need not be integers, the two coefficients in the last line are integers because <span class="math inline">\(r\in\mathbb{Z}[\tau]\)</span>. Hence <span class="math display">\[\begin{aligned}
+  \lambda(r)
+    &amp;=(cu-2dv)^2+2(cv+du)^2\\
+    &amp;=\bigl(c^2u^2-4cduv+4d^2v^2\bigr)
+      +\bigl(2c^2v^2+4cduv+2d^2u^2\bigr)\\
+    &amp;=(c^2+2d^2)u^2+2(c^2+2d^2)v^2\\
+    &amp;=\lambda(\beta)(u^2+2v^2).
+\end{aligned}\]</span> The cross terms <span class="math inline">\(-4cduv\)</span> and <span class="math inline">\(4cduv\)</span> cancel. Moreover, <span class="math display">\[u^2+2v^2
+  \leq \frac14+2\cdot\frac14
+  =\frac34.\]</span> Since <span class="math inline">\(\beta\neq0\)</span>, we have <span class="math inline">\(\lambda(\beta)&gt;0\)</span>, and therefore <span class="math display">\[\lambda(r)
+  \leq\frac34\lambda(\beta)
+  &lt;\lambda(\beta).\]</span> Thus every division has remainder <span class="math inline">\(r=0\)</span> or <span class="math inline">\(\lambda(r)&lt;\lambda(\beta)\)</span>, so <span class="math inline">\(\mathbb{Z}[\sqrt{-2}]\)</span> is a Euclidean domain with Euclidean function <span class="math inline">\(\lambda\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-37">
+<h2><a href="#ex-37">Exercise 37</a></h2>
+<div class="solution">
+<p>If <span class="math inline">\(\alpha\)</span> is a unit with inverse <span class="math inline">\(\beta\)</span>, multiplicativity gives <span class="math display">\[\lambda(\alpha)\lambda(\beta)=\lambda(1)=1.\]</span> Both factors are nonnegative integers, so <span class="math inline">\(\lambda(\alpha)=1\)</span>. Conversely, if <span class="math inline">\(\lambda(\alpha)=1\)</span>, then <span class="math inline">\(\alpha\overline{\alpha}=1\)</span>, so <span class="math inline">\(\alpha\)</span> is a unit.</p>
+<p>For <span class="math inline">\(\alpha=a+b\sqrt{-2}\)</span>, the equation <span class="math inline">\(\lambda(\alpha)=1\)</span> is <span class="math display">\[a^2+2b^2=1.\]</span> It forces <span class="math inline">\(b=0\)</span> and <span class="math inline">\(a=\pm1\)</span>. Hence the only units are <span class="math inline">\(1\)</span> and <span class="math inline">\(-1\)</span>.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-38">
+<h2><a href="#ex-38">Exercise 38</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(R\)</span> be any one of <span class="math display">\[\mathbb{Z}[i],\qquad \mathbb{Z}[\omega],\qquad \mathbb{Z}[\sqrt{-2}],\]</span> and let <span class="math inline">\(\lambda\)</span> denote its norm. Suppose <span class="math inline">\(\lambda(\pi)=p\)</span>, where <span class="math inline">\(p\)</span> is prime in <span class="math inline">\(\mathbb{Z}\)</span>.</p>
+<p>First, <span class="math inline">\(\pi\)</span> is irreducible. Indeed, if <span class="math inline">\(\pi=\gamma\delta\)</span>, then <span class="math display">\[p=\lambda(\pi)=\lambda(\gamma)\lambda(\delta).\]</span> The two factors on the right are positive integers, so one of them is <span class="math inline">\(1\)</span>. By Exercises 33, 35, and 37, the corresponding element is a unit.</p>
+<p>Each of these rings is a Euclidean domain. To prove that <span class="math inline">\(\pi\)</span> is prime, we must show that <span class="math display">\[\pi\mid\alpha\beta
+  \quad\Longrightarrow\quad
+  \pi\mid\alpha\ \text{or}\ \pi\mid\beta.\]</span> Now suppose <span class="math inline">\(\pi\mid\alpha\beta\)</span>. If <span class="math inline">\(\pi\mid\alpha\)</span>, there is nothing to prove. Otherwise, suppose <span class="math inline">\(\pi\nmid\alpha\)</span>, and let <span class="math inline">\(d\)</span> be any common divisor of <span class="math inline">\(\pi\)</span> and <span class="math inline">\(\alpha\)</span>. Since <span class="math inline">\(d\mid\pi\)</span>, write <span class="math display">\[\pi=d\eta\]</span> for some <span class="math inline">\(\eta\in R\)</span>. Because <span class="math inline">\(\pi\)</span> is irreducible, either <span class="math inline">\(d\)</span> or <span class="math inline">\(\eta\)</span> is a unit. If <span class="math inline">\(d\)</span> were not a unit, then <span class="math inline">\(\eta\)</span> would be a unit, so <span class="math inline">\(d\)</span> would be associated to <span class="math inline">\(\pi\)</span>. But <span class="math inline">\(d\mid\alpha\)</span> would then imply <span class="math inline">\(\pi\mid\alpha\)</span>, contrary to our assumption. Hence every common divisor <span class="math inline">\(d\)</span> is a unit. Thus <span class="math inline">\(\gcd(\pi,\alpha)=1\)</span> up to a unit, and Bézout’s identity gives <span class="math display">\[x\pi+y\alpha=1\]</span> for some <span class="math inline">\(x,y\in R\)</span>. Multiplying by <span class="math inline">\(\beta\)</span> yields <span class="math display">\[\beta=x\pi\beta+y\alpha\beta.\]</span> By hypothesis, <span class="math inline">\(\pi\mid\alpha\beta\)</span>, so <span class="math inline">\(\alpha\beta=\pi t\)</span> for some <span class="math inline">\(t\in R\)</span>. Hence <span class="math display">\[x\pi\beta=\pi(x\beta),
+  \qquad y\alpha\beta=y\pi t=\pi(yt).\]</span> Both terms on the right are therefore divisible by <span class="math inline">\(\pi\)</span>, so <span class="math inline">\(\pi\mid\beta\)</span>. Therefore <span class="math inline">\(\pi\)</span> is prime in <span class="math inline">\(R\)</span>. This proves the assertion simultaneously for all three rings.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+<section class="exercise" id="ex-39">
+<h2><a href="#ex-39">Exercise 39</a></h2>
+<div class="solution">
+<p>Let <span class="math inline">\(p\)</span> be a prime element in an integral domain, and suppose <span class="math display">\[p=ab.\]</span> Since <span class="math inline">\(p\mid ab\)</span>, primality gives <span class="math inline">\(p\mid a\)</span> or <span class="math inline">\(p\mid b\)</span>. If <span class="math inline">\(p\mid a\)</span>, write <span class="math inline">\(a=pc\)</span>. Then <span class="math display">\[p=ab=pcb.\]</span> Because the ring is an integral domain and <span class="math inline">\(p\neq0\)</span>, cancellation gives <span class="math inline">\(1=cb\)</span>; hence <span class="math inline">\(b\)</span> is a unit. Similarly, if <span class="math inline">\(p\mid b\)</span>, then <span class="math inline">\(a\)</span> is a unit. Thus every factorization of <span class="math inline">\(p\)</span> has a unit factor, so <span class="math inline">\(p\)</span> is irreducible.</p>
+</div>
+<p class="back-to-top"><a href="#top">back to top</a></p>
+</section>
+
+    <nav class="pagination" aria-label="Page navigation"><p><a href="../index.html">← Overview</a> · <a rel="next" href="../chapter-2/index.html">Chapter 2 →</a></p></nav>
+    <hr>
+    <footer>Independent solutions. Refer to Ireland and Rosen for the exercise statements.</footer>
+  </main>
+</body>
+</html>

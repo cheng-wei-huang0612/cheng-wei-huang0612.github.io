@@ -1,0 +1,43 @@
+/* A single document flow, matching the personal site's plain HTML style. */
+html {
+  color: #000;
+  background: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+body { margin: 8px; }
+/* A comfortable line length on wide screens; shrink naturally on phones. */
+main { min-width: 0; max-width: 100ch; margin-inline: 0; }
+main:focus { outline: none; }
+a:link { color: #0000ee; }
+a:visited { color: #551a8b; }
+a { text-decoration: underline; }
+a:focus-visible { outline: 2px solid #0000ee; outline-offset: 3px; }
+h1 { font-size: 2em; }
+h2 { font-size: 1.5em; }
+hr { border: 0; border-top: 1px solid #aaa; margin: 1em 0; }
+.chapter-list li { margin: .5em 0; }
+.exercise-nav p { line-height: 2; }
+.exercise-nav a { white-space: nowrap; }
+.exercise { border-top: 1px solid #aaa; margin-top: 1.5em; padding-top: .25em; }
+.solution::after { content: '□'; display: block; text-align: right; }
+.remark { margin: 1em 0; }
+.remark::before { content: 'Remark.'; font-style: italic; }
+.math.display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .5em 0; }
+.math.display mjx-container[display="true"] { margin: .4em 0 !important; }
+.table-scroll { overflow-x: auto; margin: 1em 0; }
+table { border-collapse: collapse; margin: auto; }
+th, td { padding: .3em .7em; }
+thead { border-top: 2px solid #000; border-bottom: 1px solid #aaa; }
+tbody { border-bottom: 2px solid #000; }
+td:first-child, th:first-child { border-right: 1px solid #aaa; }
+ol[type="a"] > li::marker { content: '(' counter(list-item, lower-alpha) ') '; }
+.pagination { margin-top: 2em; }
+.math-status, footer { font-size: .9em; }
+@media print {
+  .exercise-nav, .pagination, .back-to-top, .math-status { display: none; }
+  html { font-size: 11pt; }
+  h2 { break-after: avoid; }
+  .math.display, .table-scroll { overflow: visible; }
+}
