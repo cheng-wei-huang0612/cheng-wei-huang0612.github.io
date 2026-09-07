@@ -27,8 +27,8 @@ hr { border: 0; border-top: 1px solid #aaa; margin: 1em 0; }
 .math.display { display: block; max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: .5em 0; }
 .math.display mjx-container[display="true"] { margin: .4em 0 !important; }
 .table-scroll { overflow-x: auto; margin: 1em 0; }
-table { border-collapse: collapse; margin: auto; }
-th, td { padding: .3em .7em; }
+table { border-collapse: collapse; margin: auto; min-width: 26rem; }
+th, td { padding: .3em .7em; white-space: nowrap; }
 thead { border-top: 2px solid #000; border-bottom: 1px solid #aaa; }
 tbody { border-bottom: 2px solid #000; }
 td:first-child, th:first-child { border-right: 1px solid #aaa; }
