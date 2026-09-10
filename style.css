@@ -17,3 +17,54 @@ img {
 .photo-grid img {
     width: 800px;
 }
+
+.benchmark-page > section {
+    max-width: 760px;
+}
+
+.benchmark-entry {
+    display: grid;
+    grid-template-columns: 190px minmax(0, 1fr);
+    column-gap: 24px;
+    border-top: 1px solid #ddd;
+    margin: 24px 0 0;
+    padding: 20px 0 4px;
+}
+
+.benchmark-entry h3 {
+    grid-row: 1 / 3;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.benchmark-entry h3 small {
+    display: block;
+    font-size: 0.8em;
+    font-weight: normal;
+}
+
+.benchmark-entry p {
+    grid-column: 2;
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+.benchmark-result b {
+    font-size: 1.15em;
+    font-variant-numeric: tabular-nums;
+    margin-right: 4px;
+}
+
+@media (max-width: 600px) {
+    .benchmark-entry {
+        display: block;
+    }
+
+    .benchmark-entry h3 {
+        margin-bottom: 12px;
+    }
+
+    .benchmark-entry h3 small {
+        display: inline;
+    }
+}

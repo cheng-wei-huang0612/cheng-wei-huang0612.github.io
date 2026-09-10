@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmarks - Cesare Huang</title>
+  <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body class="benchmark-page">
+<h1>Benchmark</h1>
+<p><a href="index.html">back to home</a></p>
+<p>I write and optimize high-performance arithmetic software. Here are benchmarks from my implementations.</p>
+<hr>
+
+<section id="invert-2p255m19">
+  <h2>Invert_2p255m19 - SafeGCD / Bernstein-Yang Inverse</h2>
+  <p><a href="https://github.com/cheng-wei-huang0612/cesare_invert_2p255m19">Explore the implementation on GitHub ↗</a></p>
+
+  <section class="benchmark-entry">
+    <h3><time datetime="2026-09-10">September 10, 2026</time></h3>
+    <p>Inversion modulo 2<sup>255</sup> − 19 on Raspberry Pi 5 / Cortex-A76.</p>
+    <p class="benchmark-result"><b>3279.70</b> cycles per inversion</p>
+  </section>
+
+  <section class="benchmark-entry" id="invert-2p255m19-2026-07-26">
+    <h3><time datetime="2026-07-26">July 26, 2026</time> <small>(commit date)</small></h3>
+    <p>Inversion modulo 2<sup>255</sup> − 19 on Raspberry Pi 5 / Cortex-A76.</p>
+    <p class="benchmark-result"><b>3676.26</b> cycles per inversion</p>
+  </section>
+</section>
+</body>
+</html>
