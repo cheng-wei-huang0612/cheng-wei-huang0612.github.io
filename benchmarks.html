@@ -19,13 +19,13 @@
   <section class="benchmark-entry">
     <h3><time datetime="2026-09-10">September 10, 2026</time></h3>
     <p>Inversion modulo 2<sup>255</sup> − 19 on Raspberry Pi 5 / Cortex-A76.</p>
-    <p class="benchmark-result"><b>3279.70</b> cycles per inversion</p>
+    <p class="benchmark-result"><b>3279.70</b> cycles per inversion, <b>10.79%</b> fewer cycles than the 3676.26-cycle baseline (<a href="#invert-2p255m19-2026-07-26">see below</a>).</p>
   </section>
 
   <section class="benchmark-entry" id="invert-2p255m19-2026-07-26">
     <h3><time datetime="2026-07-26">July 26, 2026</time> <small>(commit date)</small></h3>
     <p>Inversion modulo 2<sup>255</sup> − 19 on Raspberry Pi 5 / Cortex-A76.</p>
-    <p class="benchmark-result"><b>3676.26</b> cycles per inversion</p>
+    <p class="benchmark-result"><b>3676.26</b> cycles per inversion, approximately <b>8.1%</b> fewer cycles using about 4000 cycles as the reference baseline (see <a href="https://link.springer.com/chapter/10.1007/978-3-032-25336-1_21">Accelerating and Verifying Constant-Time Modular Inversion</a>).</p>
   </section>
 </section>
 </body>
