@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Optimizing inversion modulo 2^255 − 19 on AArch64: 24-step batching, streamed final reduction, and exact low-bit lookahead to shorten the divstep feedback path.">
+  <title>Faster Inversion Modulo 2^255 − 19 on AArch64 - Cesare Huang</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    main { max-width: 800px; line-height: 1.6; }
+    h1, h2 { line-height: 1.2; }
+    h2 { margin-top: 1.5em; }
+    pre { overflow-x: auto; line-height: 1.5; }
+    .equation, .table-wrapper { overflow-x: auto; }
+    table { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+    th, td { padding: 0.5em 0.75em; border-bottom: 1px solid #ddd; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    caption { text-align: left; margin-bottom: 0.5em; }
+    .benchmark-table { width: 100%; }
+    .benchmark-table tbody th { font-weight: normal; }
+    .benchmark-note { font-size: 0.875em; color: #555; margin-top: 0.75em; }
+    .footnote { font-size: 0.9em; }
+    .slothy-workflow li + li, .references li + li { margin-top: 0.75em; }
+    .references { font-size: 0.9em; }
+    .feedback-figure { margin: 1.5em 0; }
+    .feedback-scroll { overflow-x: auto; padding-bottom: 0.25em; }
+    .feedback-diagram { display: block; width: 100%; min-width: 42rem; height: auto; }
+    .feedback-diagram text { font-family: Arial, Helvetica, sans-serif; fill: #21394b; }
+    .feedback-diagram .flow-heading { font-size: 16px; font-weight: 700; fill: #647480; }
+    .feedback-diagram .flow-node { fill: #f5f7f8; stroke: #cbd6de; stroke-width: 1.1; }
+    .feedback-diagram .flow-node-accent { fill: #edf4f8; stroke: #7c9eb8; }
+    .feedback-diagram .flow-node-added { fill: #fff4df; stroke: #b78530; stroke-width: 1.3; }
+    .feedback-diagram .flow-group { fill: #fafbfc; stroke: #cbd6de; stroke-width: 1.1; }
+    .feedback-diagram .flow-label { font-size: 15px; text-anchor: middle; }
+    .feedback-diagram .flow-group-label { font-size: 14px; font-weight: 700; text-anchor: middle; }
+    .feedback-diagram .flow-note { font-size: 14px; fill: #647480; }
+    .feedback-diagram .flow-small { font-size: 12px; fill: #647480; }
+    .feedback-diagram .flow-accent { fill: #275f85; }
+    .feedback-diagram .flow-added { fill: #946019; }
+    .feedback-diagram .flow-arrow { fill: none; stroke: #6088a6; stroke-width: 1.25; }
+    .feedback-diagram .flow-arrow-added { stroke: #b78530; stroke-width: 1.5; }
+    .feedback-diagram .flow-divider { stroke: #e0e6ea; stroke-width: 1; }
+    .feedback-figure figcaption { font-size: 0.9em; margin-top: 0.6em; }
+    .packing-figure { margin: 1.5em 0; }
+    .packing-scroll { overflow-x: auto; padding-bottom: 0.25em; }
+    .packing-diagram { min-width: 36rem; }
+    .packing-diagram + .packing-diagram { margin-top: 1.2em; }
+    .packing-name { margin: 0 0 0.35em; font: bold 0.875rem/1.4 monospace; }
+    .packing-addend, .packing-total, .packing-axis {
+      display: grid;
+      grid-template-columns: 4.5rem minmax(0, 1fr);
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .packing-addend { margin: 0.3em 0; }
+    .packing-term { font-size: 0.875rem; text-align: right; }
+    .packing-axis { font: 0.875rem/1.4 monospace; margin-bottom: 0.3em; }
+    .packing-axis > span { grid-column: 2; display: flex; justify-content: space-between; }
+    .packing-track { display: grid; grid-template-columns: repeat(64, minmax(0, 1fr)); }
+    .packing-segment {
+      position: relative;
+      min-width: 0;
+      box-sizing: border-box;
+      height: 27px;
+      border: 1px solid #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      white-space: nowrap;
+    }
+    .packing-segment + .packing-segment { border-left: 0; }
+    .packing-v { background: #e1eaf6; }
+    .packing-u { background: #e2eee5; }
+    .packing-f { background: #faf0d9; }
+    .packing-extension {
+      background: repeating-linear-gradient(135deg, #fff, #fff 4px, #e4e4e4 4px, #e4e4e4 6px);
+      color: #444;
+    }
+    .packing-zero { color: #666; border-color: #ccc; background: #fafafa; }
+    .packing-total { margin-top: 0.45em; }
+    .packing-total > span:last-child {
+      border-top: 1px solid #666;
+      padding-top: 0.25em;
+      font-size: 0.875rem;
+    }
+    .packing-overlap::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 45.833333%;
+      border-bottom: 3px solid #b77916;
+    }
+    .packing-figure figcaption { font-size: 0.9em; margin-top: 0.75em; }
+    .packing-figure figcaption p { margin: 0.4em 0; }
+    @media (max-width: 600px) {
+      th, td { padding: 0.5em 0.35em; }
+    }
+  </style>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-chtml.js"></script>
+</head>
+<body>
+<main>
+<h1>Faster Inversion Modulo 2<sup>255</sup> − 19 on AArch64</h1>
+<p><a href="../blogs.html">back to blogs</a></p>
+<p><a href="../index.html">back to home</a></p>
+<hr>
+<p><time datetime="2026-09-14">September 14, 2026</time></p>
+
+<p>
+My latest implementation of inversion modulo \(p=2^{255}-19\) takes about
+<b>3,272 cycles on a Raspberry Pi 5</b>. It combines 24-step batching,
+a final reduction that overlaps output conversion, and scalar lookahead
+that computes the low bits needed by the next batch.
+</p>
+
+<p>
+This post explains these three optimizations and how they work together. The
+implementation continues my work on
+<a href="../publications.html#eurocrypt2026-modular-inversion">accelerating and verifying constant-time modular inversion</a>.
+</p>
+
+<h2>Why pack f, u, and v together?</h2>
+
+<p>
+In SafeGCD / Bernstein–Yang inversion, each divstep updates two integers
+\(F,G\) by selecting, adding or subtracting, and dividing an even value by two.
+The choices depend on parity and the control state \(\delta\). For a batch
+of \(n\) steps, the low \(n\) bits of \(F,G\), together with \(\delta\),
+are enough to determine all those choices. Each division consumes one bit
+of precision; the high bits are unnecessary for computing the batch's matrix.
+</p>
+
+<p>
+The scalar kernel works with low-bit values \(f,g\), while NEON holds the
+full integers \(F,G\). The matrix records the row operations chosen by the
+divsteps. This suggests keeping each low-bit value together with its matrix
+row: \((f,u,v)\) in
+one 64-bit register, called <code>fuv</code>, and \((g,r,s)\) in another,
+called <code>grs</code>. An addition of the packed registers then updates
+all three components together. Conditional selection, negation, and shifting
+can likewise operate on a whole packed row.
+</p>
+
+<p>
+To make division by two work for the coefficients as well, the coefficient
+matrix starts at \(-2^n I\).<sup><a href="#fn-negative-scaling" id="fnref-negative-scaling" role="doc-noteref" aria-label="Footnote 1: Why negative scaling?">1</a></sup>
+This initial scaling supplies the factors of two
+needed by the shifts; at the end of the batch, the coefficients give the
+negative of the desired integer matrix. For example, a step that replaces
+\(g\) by \((g+f)/2\) simultaneously replaces its scaled coefficient row
+\((r,s)\) by \(((r+u)/2,(s+v)/2)\). The common arithmetic is what makes
+packing useful.
+</p>
+
+<h3>From the old 20-step layout to 24 steps</h3>
+
+<p>
+The earlier kernel already used this idea. At batch entry, its 20-step
+layout stores the low 20 bits of \(F,G\) as
+\(f_{\mathrm{low}},g_{\mathrm{low}}\):
+</p>
+
+<div class="equation">
+\[
+\begin{aligned}
+\mathtt{fuv}&amp;=f_{\mathrm{low}}+2^{21}u+2^{42}v,\\
+\mathtt{grs}&amp;=g_{\mathrm{low}}+2^{21}r+2^{42}s.
+\end{aligned}
+\]
+</div>
+
+<figure class="packing-figure">
+  <div class="packing-scroll" role="region" aria-label="20-step arithmetic packing" tabindex="0">
+    <div class="packing-diagram" role="img" aria-label="fuv: three arithmetic addends on a shared 64-bit axis. v occupies nominal bits 62 to 42, with sign extension at bit 63 and zeros below. u occupies bits 41 to 21, with sign extension above and zeros below. The initial f_low residue occupies bits 19 to 0, with zeros above.">
+    <div aria-hidden="true">
+      <p class="packing-name">fuv · 20-step</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>42</sup> v</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 23">v · 21 bits</span><span class="packing-segment packing-zero" style="grid-column: 23 / 65">42 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>21</sup> u</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 23">sign extension</span><span class="packing-segment packing-u" style="grid-column: 23 / 44">u · 21 bits</span><span class="packing-segment packing-zero" style="grid-column: 44 / 65">21 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ f<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 45">44 zero bits</span><span class="packing-segment packing-f" style="grid-column: 45 / 65">f<sub>low</sub>&nbsp;· 20 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= fuv</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+    <div class="packing-diagram" role="img" aria-label="grs: three arithmetic addends on a shared 64-bit axis. s occupies nominal bits 62 to 42, with sign extension at bit 63 and zeros below. r occupies bits 41 to 21, with sign extension above and zeros below. The initial g_low residue occupies bits 19 to 0, with zeros above.">
+    <div aria-hidden="true">
+      <p class="packing-name">grs · 20-step</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>42</sup> s</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 23">s · 21 bits</span><span class="packing-segment packing-zero" style="grid-column: 23 / 65">42 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>21</sup> r</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 23">sign extension</span><span class="packing-segment packing-u" style="grid-column: 23 / 44">r · 21 bits</span><span class="packing-segment packing-zero" style="grid-column: 44 / 65">21 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ g<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 45">44 zero bits</span><span class="packing-segment packing-f" style="grid-column: 45 / 65">g<sub>low</sub>&nbsp;· 20 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= grs</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+  </div>
+  <figcaption>
+    <p><b>20-step packing as addition.</b> Each row is one addend; all rows
+    share the same bit positions. Colored spans show the available widths:
+    21 bits per coefficient and 20 bits for the initial residue. They do not
+    indicate which bits are nonzero. Hatched regions are sign extension,
+    not additional coefficients.</p>
+    <p>The upper coefficient ends at bit 62, leaving bit 63 for sign redundancy
+    during addition or subtraction before the arithmetic right shift.</p>
+  </figcaption>
+</figure>
+
+<p>
+Here \(u,v,r,s\) denote the scaled coefficients inside the packed loop.
+The layout allows 21 bits for each signed final coefficient and enough
+space below them to run all 20 steps without an intermediate cleanup.
+The coefficients are rounded and extracted at the end.
+</p>
+
+<p>
+Extending the batch from 20 to 24 steps increases the signed coefficient width
+from 21 to 25 bits. To fit both coefficients in the same register, the
+24-step layout moves their starting positions from bits 21 and 42 to bits
+13 and 38:
+</p>
+
+<div class="equation">
+\[
+\begin{aligned}
+\mathtt{fuv}&amp;=f_{\mathrm{low}}+2^{13}u+2^{38}v,\\
+\mathtt{grs}&amp;=g_{\mathrm{low}}+2^{13}r+2^{38}s.
+\end{aligned}
+\]
+</div>
+
+<figure class="packing-figure">
+  <div class="packing-scroll" role="region" aria-label="24-step arithmetic packing" tabindex="0">
+    <div class="packing-diagram" role="img" aria-label="fuv: three arithmetic addends on a shared 64-bit axis. v occupies nominal bits 62 to 38, with sign extension at bit 63 and zeros below. u occupies bits 37 to 13, with sign extension above and zeros below. The initial f_low residue occupies bits 23 to 0, with zeros above.">
+    <div aria-hidden="true">
+      <p class="packing-name">fuv · 24-step</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>38</sup> v</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 27">v · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 27 / 65">38 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>13</sup> u</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 27">sign extension</span><span class="packing-segment packing-u" style="grid-column: 27 / 52">u · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 52 / 65">13 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ f<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 41">40 zero bits</span><span class="packing-segment packing-f packing-overlap" style="grid-column: 41 / 65">f<sub>low</sub>&nbsp;· 24 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= fuv</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+    <div class="packing-diagram" role="img" aria-label="grs: three arithmetic addends on a shared 64-bit axis. s occupies nominal bits 62 to 38, with sign extension at bit 63 and zeros below. r occupies bits 37 to 13, with sign extension above and zeros below. The initial g_low residue occupies bits 23 to 0, with zeros above.">
+    <div aria-hidden="true">
+      <p class="packing-name">grs · 24-step</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>38</sup> s</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 27">s · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 27 / 65">38 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>13</sup> r</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 27">sign extension</span><span class="packing-segment packing-u" style="grid-column: 27 / 52">r · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 52 / 65">13 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ g<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 41">40 zero bits</span><span class="packing-segment packing-f packing-overlap" style="grid-column: 41 / 65">g<sub>low</sub>&nbsp;· 24 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= grs</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+  </div>
+  <figcaption>
+    <p><b>24-step packing.</b> Each colored coefficient span has room for a
+    25-bit signed value.
+    The amber underline marks bits 23–13, where the initial low residue
+    overlaps the lower coefficient's nominal span.</p>
+  </figcaption>
+</figure>
+
+<p>
+The initial low residue now reaches into the lower coefficient's span.
+This works because the coefficients begin as multiples of \(2^{24}\),
+with their low 24 bits zero. As divsteps proceed, the coefficient scale
+is gradually consumed, while fewer residue bits are needed to determine
+the remaining steps.
+</p>
+
+<p>
+After 12 divsteps, only the low 12 bits of \(f,g\) are still needed.
+The higher residue bits no longer affect the remaining divstep decisions,
+but they still contribute to the packed word. Since \(u,r\) start at bit 13,
+leaving those bits in place can cause part of the residue to be read as part
+of \(u\) or \(r\) during coefficient extraction. The final rounding alone
+cannot always separate them, so the batch can return an incorrect matrix.
+</p>
+
+<p>
+<b>Canonicalization removes the no-longer-needed part of the residue while
+preserving these low bits and the encoded matrix coefficients.</b>
+This cleans up the packed representation; it does not reduce a value modulo \(p\).
+The kernel does this by adding a rounding bias of \(2^{24}\) and clearing
+bits 12 through 24 in each packed register. The resulting representation is:
+</p>
+
+<figure class="packing-figure">
+  <div class="packing-scroll" role="region" aria-label="24-step packing after canonicalization" tabindex="0">
+    <div class="packing-diagram" role="img" aria-label="fuv immediately after step-12 canonicalization. The nominal coefficient positions remain v at bits 62–38 and u at bits 37–13, each 25 bits wide with sign extension above. The residue is now f_low at bits 11–0, with 52 zero bits above. The coefficients are still multiples of 2^12; packed bits 12–24 are zero.">
+    <div aria-hidden="true">
+      <p class="packing-name">fuv · after step-12 canonicalization</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>38</sup> v</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 27">v · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 27 / 65">38 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>13</sup> u</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 27">sign extension</span><span class="packing-segment packing-u" style="grid-column: 27 / 52">u · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 52 / 65">13 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ f<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 53">52 zero bits</span><span class="packing-segment packing-f" style="grid-column: 53 / 65">f<sub>low</sub>&nbsp;· 12 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= fuv</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+    <div class="packing-diagram" role="img" aria-label="grs immediately after step-12 canonicalization. The nominal coefficient positions remain s at bits 62–38 and r at bits 37–13, each 25 bits wide with sign extension above. The residue is now g_low at bits 11–0, with 52 zero bits above. The coefficients are still multiples of 2^12; packed bits 12–24 are zero.">
+    <div aria-hidden="true">
+      <p class="packing-name">grs · after step-12 canonicalization</p>
+      <div class="packing-axis"><span><span>bit 63</span><span>bit 0</span></span></div>
+      <div class="packing-addend"><span class="packing-term">2<sup>38</sup> s</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 2"></span><span class="packing-segment packing-v" style="grid-column: 2 / 27">s · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 27 / 65">38 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ 2<sup>13</sup> r</span><div class="packing-track"><span class="packing-segment packing-extension" style="grid-column: 1 / 27">sign extension</span><span class="packing-segment packing-u" style="grid-column: 27 / 52">r · 25 bits</span><span class="packing-segment packing-zero" style="grid-column: 52 / 65">13 zero bits</span></div></div>
+      <div class="packing-addend"><span class="packing-term">+ g<sub>low</sub></span><div class="packing-track"><span class="packing-segment packing-zero" style="grid-column: 1 / 53">52 zero bits</span><span class="packing-segment packing-f" style="grid-column: 53 / 65">g<sub>low</sub>&nbsp;· 12 bits</span></div></div>
+      <div class="packing-total"><span class="packing-term">= grs</span><span>64-bit arithmetic sum</span></div>
+    </div>
+    </div>
+  </div>
+  <figcaption>
+    <p><b>After canonicalization.</b> The coefficient positions and 25-bit
+    widths are unchanged; both low residues now occupy only bits 11–0.
+    The coefficients still carry a factor of \(2^{12}\), so packed bits
+    12–24 are zero in both registers at this point.</p>
+  </figcaption>
+</figure>
+
+<p>
+The kernel can now run the remaining 12 divsteps, then combine the final
+rounding with coefficient extraction. One intermediate canonicalization thus
+buys four more steps per batch, reducing the frequency of full multiprecision
+updates. Increasing the batch size further would require more frequent
+canonicalization, making this a balance between the two costs.
+</p>
+
+<p>
+Once the batch is complete, the extracted coefficients are negated to recover
+the transition matrix. NEON then applies it to the full-precision \(F,G\):
+</p>
+
+<div class="equation">
+\[
+\begin{pmatrix}F'\\G'\end{pmatrix}
+=\frac{1}{2^{24}}
+\begin{pmatrix}u&amp;v\\r&amp;s\end{pmatrix}
+\begin{pmatrix}F\\G\end{pmatrix}.
+\]
+</div>
+
+<p>
+From this point on, \(u,v,r,s\) denote the entries of this transition
+matrix after sign correction. The division by
+\(2^{24}\) is exact. NEON also updates \(V,S\), maintaining
+\(F\equiv aV\pmod p\) and \(G\equiv aS\pmod p\) for the original input
+\(a\). For a nonzero input residue, the algorithm ends with \(F=\pm1\),
+giving the inverse \(FV\bmod p\).
+</p>
+
+<p>
+All four values use nine radix-\(2^{30}\) limbs, with a signed top limb.
+The complete inversion uses 12 initial divsteps followed by 24 batches of
+24, for 588 steps in total. The final block converts the internal
+representation into the output format.
+</p>
+
+<h2>Combining reduction and output conversion</h2>
+
+<p>
+The final result must be reduced to \([0,p)\) and converted from nine
+radix-\(2^{30}\) limbs into four 64-bit words. If reduction is completed
+entirely in NEON first, the output conversion has to wait.
+</p>
+
+<p>
+These tasks can overlap. As the final update produces the low limbs, the
+kernel transfers them to scalar registers and begins assembling the output
+words while NEON continues computing the upper limbs. Once the top limb is
+ready, a correction to the assembled scalar value finishes the reduction.
+The following decomposition explains why this works.
+</p>
+
+<p>
+Let \(T\) be the updated \(V\), before applying the final sign of \(F\).
+Write it as
+</p>
+
+<div class="equation">
+\[
+T=L+t_8 2^{240},\qquad 0\leq L&lt;2^{240}.
+\]
+</div>
+
+<p>
+Here \(L\) contains the eight lower limbs, and \(t_8\) is the signed
+top limb. Since \(p=2^{15}2^{240}-19\), removing a multiple of
+\(2^{15}\) from \(t_8\) amounts to removing a multiple of \(p\),
+provided we compensate for the \(-19\). Choose \(q\) by rounding
+\(t_8/2^{15}\) to the nearest integer:
+</p>
+
+<div class="equation">
+\[
+q=\left\lfloor\frac{t_8+2^{14}}{2^{15}}\right\rfloor,
+\qquad \rho=t_8-q2^{15}.
+\]
+</div>
+
+<p>
+This leaves a remainder centered around zero,
+\(-2^{14}\leq\rho&lt;2^{14}\). Subtracting \(qp\) from \(T\) then gives
+</p>
+
+<div class="equation">
+\[
+Y=T-qp=L+\rho2^{240}+19q.
+\]
+</div>
+
+<p>
+The lower part \(L\) is unchanged in this expression, so its limbs can
+be assembled before \(q\) is known. When the top limb arrives, the kernel
+uses \(\rho\) in its place, then adds the signed correction \(19q\),
+propagating carries across the four output words. This produces the centered
+result without a separate reduction pass over the vector limbs.
+</p>
+
+<p>
+The centered top limb keeps \(L+\rho2^{240}\) in
+\([-2^{254},2^{254})\). The final update keeps \(t_8\) within a signed
+64-bit value, which bounds the correction by \(|19q|&lt;2^{53}\).
+Together, these give \(|Y|&lt;2^{254}+2^{53}&lt;p\). Applying the sign of \(F\)
+preserves this bound: the result is already in \((-p,p)\), so a single
+conditional addition of \(p\) makes a negative result canonical.
+</p>
+
+<p>
+Earlier batches still perform modular corrections and carry propagation,
+but their bounded intermediate values need not be in \([0,p)\). Only
+the final output needs that canonical form.
+</p>
+
+<h2>Shortening the divstep feedback path</h2>
+
+<p>
+Without lookahead, scalar divsteps can already overlap much of the NEON
+update. The next batch still waits for NEON's new low bits of \(F,G\) to
+be transferred to scalar registers and packed for the divsteps.
+</p>
+
+<p>
+The next batch needs only the low 24 bits of each updated value. Computing
+those bits directly with scalar arithmetic can shorten the wait. This is
+<em>low-bit lookahead</em>, or fast-forwarding (FF) the divstep feedback.
+</p>
+
+<p>
+The update \(F'=(uF+vG)/2^{24}\) divides the numerator exactly by
+\(2^{24}\), shifting its bits right by 24 places. The bits needed by the
+next batch are therefore <b>bits 24–47 of \(uF+vG\)</b>.
+</p>
+
+<p>
+To compute those bits, we can ignore everything above bit 47 in \(F,G\):
+higher input bits contribute only to higher product bits. Let
+\(f_{48}=F\bmod2^{48}\) and \(g_{48}=G\bmod2^{48}\). Then
+</p>
+
+<div class="equation">
+\[
+F'\bmod2^{24}
+=\frac{(u f_{48}+v g_{48})\bmod2^{48}}{2^{24}}.
+\]
+</div>
+
+<p>
+The same calculation applies to \(G'\) and works for signed values and
+coefficients as well. Ordinary 64-bit multiply-add arithmetic preserves
+the required low 48 bits, so each row needs only a <code>mul</code>, a
+<code>madd</code>, and an extraction of bits 24–47.
+</p>
+
+<p>
+With lookahead, the matrix feeds two paths. A short scalar calculation
+prepares the next divstep input, while NEON applies the matrix to the full
+state.
+</p>
+
+<figure class="feedback-figure">
+  <div class="feedback-scroll" role="region" aria-label="Divstep feedback flow diagram" tabindex="0">
+    <svg class="feedback-diagram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 584" width="800" height="584" role="img" aria-labelledby="feedback-diagram-title feedback-diagram-desc">
+      <title id="feedback-diagram-title">Separating low-bit feedback from the full NEON update</title>
+      <desc id="feedback-diagram-desc">Matching labels A, B, and C identify the same tasks in both versions: A is the full NEON update, shown as low F/G limbs and remaining FGVS work; B prepares the packed input; C runs the next scalar divsteps. Originally, the matrix feeds A, whose low limbs must be transferred and packed by B before C can start. FF adds scalar lookahead between the matrix and B, using low48 of the input F/G prepared during the preceding full update. The new path computes low24 directly. The same matrix still feeds all of A, which can overlap C. Low limbs produced by A supply low48 for the following lookahead, not the lookahead shown above it.</desc>
+      <defs>
+        <marker id="feedback-arrowhead" viewBox="0 0 6 6" refX="5.5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L6 3 L0 6 Z" fill="#6088a6" />
+        </marker>
+        <marker id="feedback-added-arrowhead" viewBox="0 0 6 6" refX="5.5" refY="3" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0 0 L6 3 L0 6 Z" fill="#b78530" />
+        </marker>
+      </defs>
+      <g aria-hidden="true">
+        <text class="flow-heading" x="16" y="20">ORIGINAL · LOW-BIT FEEDBACK COMES FROM NEON</text>
+
+        <rect class="flow-node" x="16" y="86" width="110" height="44" />
+        <text class="flow-label" x="71" y="113">matrix M</text>
+
+        <rect class="flow-group" x="184" y="48" width="240" height="142" rx="3" />
+        <text class="flow-group-label" x="304" y="71">A · Full NEON update</text>
+        <rect class="flow-node" x="196" y="86" width="216" height="44" />
+        <text class="flow-label" x="304" y="113">Low F/G limbs</text>
+        <rect class="flow-node" x="196" y="142" width="216" height="36" />
+        <text class="flow-label" x="304" y="165">Remaining FGVS work</text>
+
+        <rect class="flow-node flow-node-accent" x="464" y="86" width="152" height="44" />
+        <text class="flow-label" x="540" y="104"><tspan x="540">B · Prepare input</tspan><tspan x="540" dy="18">transfer + pack</tspan></text>
+        <rect class="flow-node flow-node-accent" x="656" y="86" width="128" height="44" />
+        <text class="flow-label" x="720" y="104"><tspan x="720">C · Next scalar</tspan><tspan x="720" dy="18">divsteps</tspan></text>
+
+        <path class="flow-arrow" d="M126 108 H195" marker-end="url(#feedback-arrowhead)" />
+        <path class="flow-arrow" d="M160 108 V160 H195" marker-end="url(#feedback-arrowhead)" />
+        <path class="flow-arrow" d="M412 108 H463" marker-end="url(#feedback-arrowhead)" />
+        <text class="flow-small" x="444" y="98" text-anchor="middle">low24</text>
+        <path class="flow-arrow" d="M616 108 H655" marker-end="url(#feedback-arrowhead)" />
+        <text class="flow-note" x="464" y="164">The remaining work already overlaps C.</text>
+        <text class="flow-small" x="304" y="211" text-anchor="middle">A also consumes the full F/G/V/S state.</text>
+
+        <line class="flow-divider" x1="16" y1="234" x2="784" y2="234" />
+        <text class="flow-heading flow-accent" x="16" y="264">FF · ADD A SCALAR PATH FOR THE SAME LOW BITS</text>
+
+        <text class="flow-note" x="304" y="292" text-anchor="middle">low48(F, G)</text>
+        <text class="flow-small" x="304" y="308" text-anchor="middle">prepared during the preceding full update</text>
+        <path class="flow-arrow flow-arrow-added" d="M304 317 V351" marker-end="url(#feedback-added-arrowhead)" />
+
+        <rect class="flow-node" x="16" y="356" width="110" height="44" />
+        <text class="flow-label" x="71" y="383">matrix M</text>
+
+        <rect class="flow-node flow-node-added" x="184" y="352" width="240" height="52" rx="3" />
+        <text class="flow-label flow-added" x="304" y="373"><tspan x="304" font-weight="700">+ Scalar lookahead</tspan><tspan x="304" dy="20">mul / madd → bits 24–47</tspan></text>
+
+        <rect class="flow-node flow-node-accent" x="464" y="356" width="152" height="44" />
+        <text class="flow-label" x="540" y="374"><tspan x="540">B · Prepare input</tspan><tspan x="540" dy="18">pack low24</tspan></text>
+        <rect class="flow-node flow-node-accent" x="656" y="356" width="128" height="44" />
+        <text class="flow-label" x="720" y="374"><tspan x="720">C · Next scalar</tspan><tspan x="720" dy="18">divsteps</tspan></text>
+
+        <rect class="flow-group" x="184" y="436" width="240" height="142" rx="3" />
+        <text class="flow-group-label" x="304" y="459">A · Full NEON update</text>
+        <rect class="flow-node" x="196" y="474" width="216" height="44" />
+        <text class="flow-label" x="304" y="501">Low F/G limbs</text>
+        <rect class="flow-node" x="196" y="530" width="216" height="36" />
+        <text class="flow-label" x="304" y="553">Remaining FGVS work</text>
+
+        <path class="flow-arrow flow-arrow-added" d="M126 378 H183" marker-end="url(#feedback-added-arrowhead)" />
+        <path class="flow-arrow flow-arrow-added" d="M424 378 H463" marker-end="url(#feedback-added-arrowhead)" />
+        <text class="flow-small flow-added" x="444" y="368" text-anchor="middle">low24</text>
+        <path class="flow-arrow" d="M616 378 H655" marker-end="url(#feedback-arrowhead)" />
+        <path class="flow-arrow" d="M160 378 V496 H195" marker-end="url(#feedback-arrowhead)" />
+        <path class="flow-arrow" d="M160 496 V548 H195" marker-end="url(#feedback-arrowhead)" />
+        <text class="flow-small" x="147" y="443" text-anchor="end"><tspan x="147">same M</tspan><tspan x="147" dy="16">+ full state</tspan></text>
+
+        <path class="flow-arrow" d="M412 496 H459" marker-end="url(#feedback-arrowhead)" />
+        <text class="flow-note" x="472" y="491"><tspan x="472">low48 for the following lookahead</tspan><tspan class="flow-small" x="472" dy="18">from the updated F/G</tspan></text>
+        <text class="flow-note" x="472" y="552">All of A can now overlap C.</text>
+      </g>
+    </svg>
+  </div>
+  <figcaption>
+    <b>FF separates the low-bit feedback from the full update.</b>
+    Matching labels A–C show the corresponding tasks. Originally, B waits
+    for A's low limbs. FF adds the amber lookahead path to supply B directly;
+    A still performs the complete update, including those low limbs, while
+    C can start from the prepared input. Each panel follows one matrix M;
+    arrows show data dependencies.
+  </figcaption>
+</figure>
+
+<p>
+At loop entry, the low24 input is already prepared, so scalar divsteps can
+run alongside the full update of the pending matrix. As NEON produces fresh
+low48 values, they become available for lookahead with the new scalar matrix,
+preparing the following batch's input.
+</p>
+
+<p>
+The implementation uses the packed kernel's negative matrix directly for
+lookahead, so the prepared input represents the low bits of the next state
+with both signs reversed: \((-F',-G')\).
+Negating both values preserves parity and the divstep branch sequence for
+the same \(\delta\), avoiding a sign conversion on this path.
+</p>
+
+<p>
+Lookahead trades a small amount of extra scalar arithmetic for a shorter
+dependency between batches.
+</p>
+
+<h2>Scheduling with SLOTHY</h2>
+
+<p>
+Lookahead creates opportunities for overlap, but the instruction order and
+register assignments determine how well the processor can use them.
+<a href="https://github.com/slothy-optimizer/slothy">SLOTHY</a>, introduced
+by Abdulrahman et al., automates this part of assembly development. The
+programmer supplies the algorithm and instruction choices in readable
+assembly; SLOTHY searches for register assignments and schedules using
+a processor model. It uses constraint solving to respect data
+dependencies and register limits while accounting for instruction latencies
+and execution resources.
+<a href="#ref-slothy-paper" role="doc-biblioref">[1]</a>
+</p>
+
+<p>
+For this inversion kernel, the starting point is symbolic assembly:
+temporary values have descriptive names, while registers that carry state
+between blocks are fixed. The lookahead computation is already part of
+that source. Here, SLOTHY is used in two passes:
+</p>
+
+<ol class="slothy-workflow">
+  <li><b>Allocate registers.</b> A first pass assigns physical registers to
+  the symbolic temporaries in the initialization, main loop, and final
+  block. Instruction order is preserved, and spills to memory are
+  forbidden.</li>
+  <li><b>Schedule overlapping windows.</b> A second pass optimizes each
+  block in overlapping windows using SLOTHY's splitting heuristic. This
+  keeps the solver's problems manageable while allowing scalar divsteps,
+  NEON arithmetic, and register transfers to be interleaved. The overlap
+  lets successive windows reconsider earlier scheduling choices.
+  <a href="#ref-slothy-docs" role="doc-biblioref">[2]</a></li>
+</ol>
+
+<p>
+The A72- and A76-tuned versions below use schedules selected by measurements
+on each core.
+</p>
+
+<h2>Overall performance</h2>
+
+<p>
+The selected implementations are compared below with the specialized
+inversion routines from s2n-bignum and lib25519. These are measurements of
+complete inversion calls, rounded to the nearest cycle; each core favors
+a different schedule of the same FF implementation.
+</p>
+
+<div class="table-wrapper" role="region" aria-label="Overall inversion performance" tabindex="0">
+<table class="benchmark-table">
+  <caption>Measured cycles per inversion — September 14, 2026</caption>
+  <thead><tr><th scope="col">Implementation</th><th scope="col">A72</th><th scope="col">A76</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">FF tuned for A72</th><td><b>3,917</b></td><td>3,316</td></tr>
+    <tr><th scope="row">FF tuned for A76</th><td>3,998</td><td><b>3,272</b></td></tr>
+    <tr><th scope="row">s2n-bignum <code>inv_p25519</code> <a href="#ref-s2n-bignum" role="doc-biblioref">[3]</a></th><td>6,095</td><td>5,550</td></tr>
+    <tr><th scope="row">lib25519 <code>safegcdneon</code> <a href="#ref-lib25519" role="doc-biblioref">[4]</a></th><td>7,942</td><td>5,522</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p class="benchmark-note">
+Measured on a Pi 400 (A72, 1.8 GHz) and Pi 5 (A76, 2.4 GHz). Results are
+medians from repeated warm-cache calls, with paired empty-baseline
+subtraction. All versions use the same fixed input below \(2^{255}\),
+nonzero modulo \(p\), and include their original wrappers.
+</p>
+
+<h2>Conclusion</h2>
+
+<p>
+Batching 24 divsteps with one intermediate canonicalization reduces the
+frequency of full multiprecision updates. Combining final reduction with
+output conversion lets scalar registers assemble the finished low digits
+while NEON computes the upper digits. Low-bit lookahead shortens the path
+to the next batch's input, allowing scalar divsteps to overlap more of the
+full update.
+</p>
+
+<p>
+With SLOTHY handling register allocation and instruction scheduling, these
+three changes bring inversion to <b>3,917 cycles on Cortex-A72</b> and
+<b>3,272 cycles on Cortex-A76</b>, using a schedule selected for each core.
+</p>
+
+<hr>
+<p>
+<b>Code:</b> the
+<a href="https://github.com/cheng-wei-huang0612/cesare_invert_2p255m19">public implementation repository</a>
+contains the Pi 5 implementation, correctness tests, and a benchmark runner.
+</p>
+<p>
+<b>Related:</b>
+<a href="2026-08-09-smull-smlal-forwarding-cortex-a76.html">Measuring SMULL-to-SMLAL Accumulator Forwarding on Cortex-A76</a>.
+</p>
+
+<h2>References</h2>
+<ol class="references">
+  <li id="ref-slothy-paper">
+  Amin Abdulrahman, Hanno Becker, Matthias J. Kannwischer, and Fabien Klein.
+  <a href="https://doi.org/10.46586/tches.v2024.i1.87-132"><cite>Fast and Clean:
+  Auditable high-performance assembly via constraint solving</cite></a>.
+  <i>IACR Transactions on Cryptographic Hardware and Embedded Systems</i>,
+  2024(1), pp. 87–132. DOI: 10.46586/tches.v2024.i1.87-132.
+  <a href="https://eprint.iacr.org/2022/1303">Open-access preprint</a>.
+  Sections 4–5 describe the constraint model and optimization framework.
+  </li>
+  <li id="ref-slothy-docs">
+  SLOTHY contributors.
+  <a href="https://github.com/slothy-optimizer/slothy">SLOTHY project documentation</a>
+  and <a href="https://github.com/slothy-optimizer/slothy/blob/main/docs/source/tutorial/README.md">official tutorial</a>,
+  including register allocation and the splitting heuristic.
+  </li>
+  <li id="ref-s2n-bignum">
+  s2n-bignum contributors.
+  <a href="https://github.com/awslabs/s2n-bignum/blob/main/arm/curve25519/bignum_inv_p25519.S">AArch64
+  <code>bignum_inv_p25519</code> implementation</a>.
+  The table abbreviates the routine name as <code>inv_p25519</code>.
+  </li>
+  <li id="ref-lib25519">
+  lib25519, release 20260614, <code>crypto_pow/inv25519/arm64-safegcdneon</code>.
+  The <a href="https://lib25519.cr.yp.to/people.html">official implementation credits</a>
+  identify Kaushik Nath as its author.
+  </li>
+</ol>
+
+<hr>
+<aside class="footnote" id="fn-negative-scaling" role="doc-footnote" aria-label="Footnote 1">
+<p>
+<sup>1</sup> The minus sign lets each coefficient fit in an
+\((n+1)\)-bit signed integer at initialization and after every completed
+divstep. Its range is \([-2^n,2^n-1]\).
+Starting from \(-2^n I\) fits this range; starting from \(+2^n I\) would
+already exceed it. Row selection and the exact halved sums or differences
+used by divsteps preserve the range at these boundaries.
+Thus the 20-step and 24-step kernels need 21-bit and 25-bit signed
+coefficient slots, respectively, including the sign bit.
+<a href="#fnref-negative-scaling" role="doc-backlink" aria-label="Back to footnote reference">↩</a>
+</p>
+</aside>
+</main>
+</body>
+</html>
