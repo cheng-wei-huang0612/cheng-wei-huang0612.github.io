@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#202120">
+  <meta name="description" content="Two integers. One common ground. ChatGCD is a tiny, browser-only greatest common divisor calculator by Cesare Huang.">
+  <title>ChatGCD — Common ground, calculated.</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="chatgcd.css?v=random-welcome-2">
+  <script type="module" src="app.js?v=random-welcome-2"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="ChatGCD sidebar">
+      <a class="brand" href="./" aria-label="ChatGCD home">
+        <span class="brand-icon" aria-hidden="true">÷</span>
+        <span>Chat<span class="brand-accent">GCD</span><span class="edition"> / 01</span></span>
+      </a>
+      <button class="new-chat sidebar-new" type="button" data-new-chat disabled>
+        <span aria-hidden="true">＋</span> New chat <span class="shortcut" aria-hidden="true">↗</span>
+      </button>
+      <div class="sidebar-body">
+        <p class="eyebrow">A VERY SPECIALIZED ASSISTANT</p>
+        <p class="sidebar-description">A familiar conversation.<br>A rather specific skill set.</p>
+        <section class="format-card" aria-labelledby="format-title">
+          <h2 id="format-title">The entire prompt guide</h2>
+          <code>a, b</code>
+          <p>Two decimal integers.<br>One comma between them.</p>
+          <div class="format-rule"></div>
+          <p>Negatives? Absolutely.<br>Big integers? Up to 1,024 digits each.<br>Life advice? Try a different chat.</p>
+        </section>
+        <section class="chat-history" aria-labelledby="chat-history-title">
+          <div class="history-heading"><h2 id="chat-history-title">Your chats</h2><span data-chat-count></span></div>
+          <p class="session-note">This visit only. Refresh clears all chats.</p>
+          <nav class="chat-list" data-chat-list aria-label="Chats from this visit"></nav>
+        </section>
+      </div>
+      <div class="visitor-area">
+        <button class="visitor-profile" type="button" data-guest-menu-trigger aria-label="Guest menu" aria-expanded="false" aria-controls="guest-menu" disabled><span class="visitor-avatar" aria-hidden="true">G</span><span>Guest<small>No account · This visit only</small></span><span class="visitor-chevron" aria-hidden="true">⌃</span></button>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="model-label">ChatGCD <span>Euclidean edition</span></div>
+        <div class="topbar-actions">
+          <span class="local-badge"><span aria-hidden="true"></span> AI: Arithmetic Intelligence</span>
+          <button class="mobile-new" type="button" data-new-chat disabled aria-label="New chat">＋</button>
+          <button class="mobile-guest" type="button" data-guest-menu-trigger aria-label="Guest menu" aria-expanded="false" aria-controls="guest-menu" disabled>G</button>
+        </div>
+      </header>
+
+      <details class="mobile-chat-picker" id="mobile-chat-picker">
+        <summary><span>Chats</span><span id="current-chat-name">New chat</span><span aria-hidden="true">⌄</span></summary>
+        <div class="mobile-chat-content">
+          <p class="session-note">This visit only. Refresh clears all chats. <span data-chat-count></span></p>
+          <nav class="chat-list" data-chat-list aria-label="Chats from this visit"></nav>
+        </div>
+      </details>
+
+      <div class="workspace" id="workspace">
+        <section class="welcome" id="welcome" aria-labelledby="welcome-title">
+          <div class="hero-symbol" aria-hidden="true"><span>gcd</span><i></i></div>
+          <p class="eyebrow">COMMON GROUND, CALCULATED.</p>
+          <h1 id="welcome-title">Two integers.<br>One common ground.</h1>
+          <p class="welcome-description">I find the greatest common divisor.<br>That's my whole personality.</p>
+          <div class="examples" aria-label="Example calculations">
+            <button type="button" class="example" data-example="48, 18" disabled><span class="example-label">Start simple <span aria-hidden="true">↗</span></span><code>48, 18</code><span class="example-note">A classic common divisor</span></button>
+            <button type="button" class="example" data-example="-270, 192" disabled><span class="example-label">Change the signs <span aria-hidden="true">↗</span></span><code>-270, 192</code><span class="example-note">Negatives are welcome</span></button>
+            <button type="button" class="example" data-example="12345678901234567890, 9876543210" disabled><span class="example-label">Think bigger <span aria-hidden="true">↗</span></span><code>12345678901234567890,<br>9876543210</code><span class="example-note">BigInt keeps every digit</span></button>
+          </div>
+        </section>
+        <div class="conversation" id="conversation" role="log" aria-label="Calculation conversation" aria-live="polite" aria-relevant="additions"></div>
+      </div>
+
+      <div class="composer-area">
+        <section class="follow-ups" id="follow-ups" aria-labelledby="follow-up-title" hidden>
+          <p id="follow-up-title">Try a follow-up <span id="follow-up-hint">· Click to calculate</span></p>
+          <div class="follow-up-options" id="follow-up-options"></div>
+        </section>
+        <form class="composer" id="composer" aria-label="Calculate a greatest common divisor">
+          <label for="message" class="sr-only">Two integers separated by a comma</label>
+          <textarea id="message" name="message" rows="1" placeholder="Find common ground… try 48, 18" aria-describedby="input-hint runtime-status" spellcheck="false" autocomplete="off" autocapitalize="off" enterkeyhint="send" disabled></textarea>
+          <div class="composer-bottom"><span id="input-hint"><span class="input-symbol" aria-hidden="true">ℤ</span> Two integers, separated by a comma</span><button id="send" class="send" type="submit" aria-label="Send calculation" disabled><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 18V6m-5 5 5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+        </form>
+        <p class="composer-footnote">Runs entirely in your browser. <span>No account. Chats last until refresh.</span></p>
+        <details class="mobile-guide">
+          <summary>Format &amp; about ChatGCD</summary>
+          <p>Use <code>a, b</code>, e.g. <code>-48, 18</code>. Up to 1,024 decimal digits each, including leading zeros; up to 2,112 characters per message. By convention, gcd(0, 0) = 0.</p>
+          <p>An independent personal project using Euclid's algorithm and BigInt. No AI, backend or external API. Variable-time arithmetic for number theory fun.</p>
+          <a href="https://github.com/cheng-wei-huang0612/cheng-wei-huang0612.github.io/tree/main/chatgcd" target="_blank" rel="noopener">Read the source ↗</a>
+        </details>
+        <p class="runtime-status" id="runtime-status" role="status">Loading calculator… If this remains visible, enable JavaScript and use a browser with BigInt support.</p>
+        <noscript><p class="no-script">ChatGCD needs JavaScript enabled to calculate. No information is sent to a server.</p></noscript>
+      </div>
+    </main>
+  </div>
+  <nav class="guest-menu" id="guest-menu" aria-label="Guest menu" hidden>
+    <p class="guest-menu-heading">Articles &amp; links</p>
+    <button class="guest-menu-item" type="button" disabled><span>Popular science<small>No articles yet</small></span><span class="guest-menu-symbol" aria-hidden="true">⌑</span></button>
+    <div class="guest-menu-divider"></div>
+    <a class="guest-menu-item" href="../index.html"><span>Author's homepage<small>Back to the personal website</small></span><span class="guest-menu-symbol" aria-hidden="true">↗</span></a>
+  </nav>
+</body>
+</html>

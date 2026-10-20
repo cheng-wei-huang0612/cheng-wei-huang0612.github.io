@@ -1,0 +1,12 @@
+{
+  "name": "chatgcd",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test gcd.test.mjs session.test.mjs followups.test.mjs"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3"
+  }
+}
