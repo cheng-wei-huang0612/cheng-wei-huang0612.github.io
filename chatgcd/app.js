@@ -144,11 +144,9 @@ function initializeGuestMenu() {
             closeMenu();
     });
     document.addEventListener("focusin", (event) => {
+        // Safari can blur a clicked link with no next focus target before navigation.
+        // Close only when focus arrives outside, not on an ambiguous focusout.
         if (!menu.hidden && !isInside(event.target))
-            closeMenu();
-    });
-    menu.addEventListener("focusout", (event) => {
-        if (!isInside(event.relatedTarget))
             closeMenu();
     });
     document.addEventListener("keydown", (event) => {
